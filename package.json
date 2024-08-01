@@ -7,10 +7,15 @@
   "author": "Darshan Sen <raisinten@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "electron main.js"
+    "start": "electron main.js",
+    "use-snapshot": "yarn create-snapshot && yarn copy-snapshot",
+    "create-snapshot": "node tools/create-v8-snapshot.js",
+    "copy-snapshot": "node tools/copy-v8-snapshot.js"
   },
   "dependencies": {
     "electron": "28.3.1",
+    "electron-link": "^0.6.0",
+    "electron-mksnapshot": "28.3.1",
     "lodash": "4.17.21"
   }
 }

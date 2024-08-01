@@ -2,6 +2,8 @@
 const { app, BrowserWindow } = require('electron')
 const path = require('node:path')
 
+require('./v8-snapshots-util.js');
+
 const { performance } = require('node:perf_hooks');
 
 const before = performance.now();
