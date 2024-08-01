@@ -1,0 +1,9 @@
+{
+  "name": "electron-snapshot-experiment",
+  "version": "1.0.0",
+  "private": true,
+  "main": "index.js",
+  "repository": "git@github.com:RaisinTen/electron-snapshot-experiment.git",
+  "author": "Darshan Sen <raisinten@gmail.com>",
+  "license": "MIT"
+}
