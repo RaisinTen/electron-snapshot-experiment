@@ -2,6 +2,16 @@
 const { app, BrowserWindow } = require('electron')
 const path = require('node:path')
 
+const { performance } = require('node:perf_hooks');
+
+const before = performance.now();
+const _ = require('lodash');
+const after = performance.now();
+
+const duration = after - before;
+
+console.log(`duration of require('lodash'): ${duration}ms`);
+
 function createWindow () {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
