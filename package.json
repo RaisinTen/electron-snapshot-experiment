@@ -2,8 +2,14 @@
   "name": "electron-snapshot-experiment",
   "version": "1.0.0",
   "private": true,
-  "main": "index.js",
+  "main": "main.js",
   "repository": "git@github.com:RaisinTen/electron-snapshot-experiment.git",
   "author": "Darshan Sen <raisinten@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "start": "electron main.js"
+  },
+  "dependencies": {
+    "electron": "28.3.1"
+  }
 }
