@@ -5,6 +5,7 @@ const snapshotFileName = 'snapshot_blob.bin'
 const v8ContextFileName = getV8ContextFileName()
 const pathToBlob = path.resolve(__dirname, '..', snapshotFileName)
 const pathToBlobV8 = path.resolve(__dirname, '..', v8ContextFileName)
+const pathToBlobV8Old = path.resolve(__dirname, '..', `old-${v8ContextFileName}`)
 
 switch (process.platform) {
   case 'darwin': {
@@ -13,6 +14,10 @@ switch (process.platform) {
       '..',
       'node_modules/electron/dist/Electron.app/Contents/Frameworks/Electron Framework.framework/Versions/A/Resources'
     )
+
+    console.log('Saving v8 snapshot from', path.join(pathToElectron, v8ContextFileName), 'to', pathToBlobV8Old)
+    fs.copyFileSync(path.join(pathToElectron, v8ContextFileName), pathToBlobV8Old)
+
     console.log('Copying v8 snapshots from', pathToBlob, 'to', pathToElectron)
     fs.copyFileSync(pathToBlob, path.join(pathToElectron, snapshotFileName))
     fs.copyFileSync(pathToBlobV8, path.join(pathToElectron, v8ContextFileName))
@@ -27,6 +32,10 @@ switch (process.platform) {
       'electron',
       'dist'
     )
+
+    console.log('Saving v8 snapshot from', path.join(pathToElectron, v8ContextFileName), 'to', pathToBlobV8Old)
+    fs.copyFileSync(path.join(pathToElectron, v8ContextFileName), pathToBlobV8Old)
+
     console.log('Copying v8 snapshots from', pathToBlob, 'to', pathToElectron)
     fs.copyFileSync(pathToBlob, path.join(pathToElectron, snapshotFileName))
     fs.copyFileSync(pathToBlobV8, path.join(pathToElectron, v8ContextFileName))

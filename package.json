@@ -10,7 +10,8 @@
     "start": "electron main.js",
     "use-snapshot": "yarn create-snapshot && yarn copy-snapshot",
     "create-snapshot": "node tools/create-v8-snapshot.js",
-    "copy-snapshot": "node tools/copy-v8-snapshot.js"
+    "copy-snapshot": "node tools/copy-v8-snapshot.js",
+    "reset-snapshot": "node tools/reset-v8-snapshot.js"
   },
   "dependencies": {
     "electron": "28.3.1",
