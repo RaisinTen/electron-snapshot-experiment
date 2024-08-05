@@ -696,6 +696,11 @@ pend@~1.2.0:
   resolved "https://registry.yarnpkg.com/pend/-/pend-1.2.0.tgz#7a57eb550a6783f9115331fcf4663d5c8e007a50"
   integrity sha512-F3asv42UuXchdzt+xXqfW1OGlVBe+mxa2mqI0pg5yAHZPvFmY3Y6drSf/GQ1A86WgWEN9Kzh/WrgKa6iGcHXLg==
 
+perftrace@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/perftrace/-/perftrace-1.2.1.tgz#26536d86b8cf54e981130b155e3bce402b3ed5f6"
+  integrity sha512-eA2cgq8Zeykj2eTCJKlYnyde24lKxD2RE2KMXXpbd8Nkud2ZfUiPbqh/b34nhQUcNmq38liAxi2eoyfcTD9Cdw==
+
 private@0.1.8:
   version "0.1.8"
   resolved "https://registry.yarnpkg.com/private/-/private-0.1.8.tgz#2381edb3689f7a53d653190060fcf822d2f368ff"

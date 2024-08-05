@@ -1,18 +1,25 @@
+require('./v8-snapshots-util.js');
+
+const { TraceEvents, trackRequires } = require('perftrace');
+
+const traceEvents = new TraceEvents();
+
+trackRequires(true);
+
 // Modules to control application life and create native browser window
 const { app, BrowserWindow } = require('electron')
 const path = require('node:path')
 
-require('./v8-snapshots-util.js');
+process.on('exit', () => {
+  const events = traceEvents.getEvents();
+  traceEvents.destroy();
+  require('fs').writeFileSync('events.json', JSON.stringify(events));
+});
+
+const _ = require('lodash');
 
 const { performance } = require('node:perf_hooks');
-
-const before = performance.now();
-const _ = require('lodash');
-const after = performance.now();
-
-const duration = after - before;
-
-console.log(`duration of require('lodash'): ${duration}ms`);
+performance.measure('startup');
 
 function createWindow () {
   // Create the browser window.
