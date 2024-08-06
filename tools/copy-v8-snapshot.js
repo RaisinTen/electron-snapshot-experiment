@@ -1,11 +1,11 @@
+const { flipFuses, FuseVersion, FuseV1Options } = require('@electron/fuses')
 const path = require('path')
 const fs = require('fs')
 
 const snapshotFileName = 'snapshot_blob.bin'
 const v8ContextFileName = getV8ContextFileName()
-const pathToBlob = path.resolve(__dirname, '..', snapshotFileName)
-const pathToBlobV8 = path.resolve(__dirname, '..', v8ContextFileName)
-const pathToBlobV8Old = path.resolve(__dirname, '..', `old-${v8ContextFileName}`)
+const pathToSnapshotBlob = path.resolve(__dirname, '..', snapshotFileName)
+const pathToV8ContextBlob = path.resolve(__dirname, '..', v8ContextFileName)
 
 switch (process.platform) {
   case 'darwin': {
@@ -15,12 +15,9 @@ switch (process.platform) {
       'node_modules/electron/dist/Electron.app/Contents/Frameworks/Electron Framework.framework/Versions/A/Resources'
     )
 
-    console.log('Saving v8 snapshot from', path.join(pathToElectron, v8ContextFileName), 'to', pathToBlobV8Old)
-    fs.copyFileSync(path.join(pathToElectron, v8ContextFileName), pathToBlobV8Old)
-
-    console.log('Copying v8 snapshots from', pathToBlob, 'to', pathToElectron)
-    fs.copyFileSync(pathToBlob, path.join(pathToElectron, snapshotFileName))
-    fs.copyFileSync(pathToBlobV8, path.join(pathToElectron, v8ContextFileName))
+    console.log('Copying v8 snapshots from', pathToSnapshotBlob, 'to', pathToElectron)
+    fs.copyFileSync(pathToSnapshotBlob, path.join(pathToElectron, snapshotFileName))
+    fs.copyFileSync(pathToV8ContextBlob, path.join(pathToElectron, 'browser_v8_context_snapshot.bin'))
     break
   }
   case 'win32':
@@ -33,12 +30,9 @@ switch (process.platform) {
       'dist'
     )
 
-    console.log('Saving v8 snapshot from', path.join(pathToElectron, v8ContextFileName), 'to', pathToBlobV8Old)
-    fs.copyFileSync(path.join(pathToElectron, v8ContextFileName), pathToBlobV8Old)
-
-    console.log('Copying v8 snapshots from', pathToBlob, 'to', pathToElectron)
-    fs.copyFileSync(pathToBlob, path.join(pathToElectron, snapshotFileName))
-    fs.copyFileSync(pathToBlobV8, path.join(pathToElectron, v8ContextFileName))
+    console.log('Copying v8 snapshots from', pathToSnapshotBlob, 'to', pathToElectron)
+    fs.copyFileSync(pathToSnapshotBlob, path.join(pathToElectron, snapshotFileName))
+    fs.copyFileSync(pathToV8ContextBlob, path.join(pathToElectron, 'browser_v8_context_snapshot.bin'))
     break
   }
 }
@@ -52,3 +46,13 @@ function getV8ContextFileName() {
     return `v8_context_snapshot.bin`
   }
 }
+
+flipFuses(
+  // Path to electron
+  require('electron'),
+  // Fuses to flip
+  {
+    version: FuseVersion.V1,
+    [FuseV1Options.LoadBrowserProcessSpecificV8Snapshot]: true
+  }
+)

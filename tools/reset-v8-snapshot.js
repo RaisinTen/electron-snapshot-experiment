@@ -1,9 +1,9 @@
+const { flipFuses, FuseVersion, FuseV1Options } = require('@electron/fuses')
 const path = require('path')
 const fs = require('fs')
 
 const snapshotFileName = 'snapshot_blob.bin'
-const v8ContextFileName = getV8ContextFileName()
-const pathToBlobV8Old = path.resolve(__dirname, '..', `old-${v8ContextFileName}`)
+const v8ContextFileName = 'browser_v8_context_snapshot.bin'
 
 switch (process.platform) {
   case 'darwin': {
@@ -15,9 +15,7 @@ switch (process.platform) {
 
     console.log('Removing v8 snapshot from', path.join(pathToElectron, snapshotFileName))
     fs.unlinkSync(path.join(pathToElectron, snapshotFileName))
-
-    console.log('Copying old v8 snapshots from', pathToBlobV8Old, 'to', pathToElectron)
-    fs.copyFileSync(pathToBlobV8Old, path.join(pathToElectron, v8ContextFileName))
+    fs.unlinkSync(path.join(pathToElectron, v8ContextFileName))
     break
   }
   case 'win32':
@@ -32,19 +30,17 @@ switch (process.platform) {
 
     console.log('Removing v8 snapshot from', path.join(pathToElectron, snapshotFileName))
     fs.unlinkSync(path.join(pathToElectron, snapshotFileName))
-
-    console.log('Copying old v8 snapshots from', pathToBlobV8Old, 'to', pathToElectron)
-    fs.copyFileSync(pathToBlobV8Old, path.join(pathToElectron, v8ContextFileName))
+    fs.unlinkSync(path.join(pathToElectron, v8ContextFileName))
     break
   }
 }
 
-function getV8ContextFileName() {
-  if (process.platform === 'darwin') {
-    return `v8_context_snapshot${
-      process.arch.startsWith('arm') ? '.arm64' : '.x86_64'
-    }.bin`
-  } else {
-    return `v8_context_snapshot.bin`
+flipFuses(
+  // Path to electron
+  require('electron'),
+  // Fuses to flip
+  {
+    version: FuseVersion.V1,
+    [FuseV1Options.LoadBrowserProcessSpecificV8Snapshot]: false
   }
-}
+)

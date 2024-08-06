@@ -14,6 +14,7 @@
     "reset-snapshot": "node tools/reset-v8-snapshot.js"
   },
   "dependencies": {
+    "@electron/fuses": "^1.8.0",
     "electron": "28.3.1",
     "electron-link": "^0.6.0",
     "electron-mksnapshot": "28.3.1",
