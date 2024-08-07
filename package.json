@@ -8,10 +8,11 @@
   "license": "MIT",
   "scripts": {
     "start": "electron main.js",
-    "use-snapshot": "yarn create-snapshot && yarn copy-snapshot",
+    "use-snapshot": "yarn create-snapshot && yarn copy-snapshot && yarn read-fuses",
     "create-snapshot": "node tools/create-v8-snapshot.js",
     "copy-snapshot": "node tools/copy-v8-snapshot.js",
-    "reset-snapshot": "node tools/reset-v8-snapshot.js"
+    "reset-snapshot": "node tools/reset-v8-snapshot.js && yarn read-fuses",
+    "read-fuses": "electron-fuses read --app node_modules/electron/dist/Electron.app"
   },
   "dependencies": {
     "@electron/fuses": "^1.8.0",
