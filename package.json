@@ -15,15 +15,17 @@
     "read-fuses": "electron-fuses read --app node_modules/electron/dist/Electron.app"
   },
   "dependencies": {
-    "@electron/fuses": "^1.8.0",
     "async": "1.5.2",
     "circular-json": "0.3.0",
     "electron": "28.3.1",
-    "electron-link": "^0.6.0",
-    "electron-mksnapshot": "28.3.1",
     "i18next": "23.5.1",
     "lodash": "4.17.21",
     "perftrace": "^1.2.1",
     "semver": "5.5.1"
+  },
+  "devDependencies": {
+    "@electron/fuses": "^1.8.0",
+    "electron-link": "^0.6.0",
+    "electron-mksnapshot": "28.3.1"
   }
 }
