@@ -16,6 +16,8 @@ process.on('exit', () => {
   require('fs').writeFileSync('events.json', JSON.stringify(events));
 });
 
+const semver = require('semver');
+const circularJSON = require('circular-json');
 const _ = require('lodash');
 
 const { performance } = require('node:perf_hooks');
