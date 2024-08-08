@@ -20,6 +20,7 @@ const semver = require('semver');
 const circularJSON = require('circular-json');
 const _ = require('lodash');
 const async = require('async');
+const i18n = require('i18next');
 
 const { performance } = require('node:perf_hooks');
 performance.measure('startup');
