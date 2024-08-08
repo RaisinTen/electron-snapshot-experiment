@@ -19,6 +19,7 @@ process.on('exit', () => {
 const semver = require('semver');
 const circularJSON = require('circular-json');
 const _ = require('lodash');
+const async = require('async');
 
 const { performance } = require('node:perf_hooks');
 performance.measure('startup');
