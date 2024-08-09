@@ -1,0 +1,16 @@
+diff --git a/node_modules/minimatch/minimatch.js b/node_modules/minimatch/minimatch.js
+index fda45ad..3d136b3 100644
+--- a/node_modules/minimatch/minimatch.js
++++ b/node_modules/minimatch/minimatch.js
+@@ -1,10 +1,7 @@
+ module.exports = minimatch
+ minimatch.Minimatch = Minimatch
+ 
+-var path = (function () { try { return require('path') } catch (e) {}}()) || {
+-  sep: '/'
+-}
+-minimatch.sep = path.sep
++var path = require('path');
+ 
+ var GLOBSTAR = minimatch.GLOBSTAR = Minimatch.GLOBSTAR = {}
+ var expand = require('brace-expansion')

@@ -12,12 +12,14 @@
     "create-snapshot": "node tools/create-v8-snapshot.js",
     "copy-snapshot": "node tools/copy-v8-snapshot.js",
     "reset-snapshot": "node tools/reset-v8-snapshot.js && yarn read-fuses",
-    "read-fuses": "electron-fuses read --app node_modules/electron/dist/Electron.app"
+    "read-fuses": "electron-fuses read --app node_modules/electron/dist/Electron.app",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "async": "1.5.2",
     "circular-json": "0.3.0",
     "electron": "28.3.1",
+    "electron-json-storage": "4.5.0",
     "i18next": "23.5.1",
     "lodash": "4.17.21",
     "perftrace": "^1.2.1",
@@ -26,6 +28,7 @@
   "devDependencies": {
     "@electron/fuses": "^1.8.0",
     "electron-link": "^0.6.0",
-    "electron-mksnapshot": "28.3.1"
+    "electron-mksnapshot": "28.3.1",
+    "patch-package": "^8.0.0"
   }
 }

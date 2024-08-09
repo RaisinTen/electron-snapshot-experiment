@@ -1,0 +1,15 @@
+diff --git a/node_modules/inherits/inherits.js b/node_modules/inherits/inherits.js
+index f71f2d9..a5f71c5 100644
+--- a/node_modules/inherits/inherits.js
++++ b/node_modules/inherits/inherits.js
+@@ -1,9 +1 @@
+-try {
+-  var util = require('util');
+-  /* istanbul ignore next */
+-  if (typeof util.inherits !== 'function') throw '';
+-  module.exports = util.inherits;
+-} catch (e) {
+-  /* istanbul ignore next */
+-  module.exports = require('./inherits_browser.js');
+-}
++module.exports = require('./inherits_browser.js');

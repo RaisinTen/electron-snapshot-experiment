@@ -1,0 +1,12 @@
+diff --git a/node_modules/glob/glob.js b/node_modules/glob/glob.js
+index 37a4d7e..c6b7be1 100644
+--- a/node_modules/glob/glob.js
++++ b/node_modules/glob/glob.js
+@@ -113,7 +113,6 @@ glob.hasMagic = function (pattern, options_) {
+ }
+ 
+ glob.Glob = Glob
+-inherits(Glob, EE)
+ function Glob (pattern, options, cb) {
+   if (typeof options === 'function') {
+     cb = options
