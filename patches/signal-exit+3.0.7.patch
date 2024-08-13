@@ -1,0 +1,24 @@
+diff --git a/node_modules/signal-exit/index.js b/node_modules/signal-exit/index.js
+index 93703f3..b6f5057 100644
+--- a/node_modules/signal-exit/index.js
++++ b/node_modules/signal-exit/index.js
+@@ -23,7 +23,6 @@ if (!processOk(process)) {
+     return function () {}
+   }
+ } else {
+-  var assert = require('assert')
+   var signals = require('./signals.js')
+   var isWin = /^win/i.test(process.platform)
+ 
+@@ -56,7 +55,10 @@ if (!processOk(process)) {
+     if (!processOk(global.process)) {
+       return function () {}
+     }
+-    assert.equal(typeof cb, 'function', 'a callback must be provided for exit handler')
++    // Regardless of being a builtin Node.js module, the 'assert' module takes
++    // ~4.5ms to load on my Intel macOS.
++    if (typeof cb !== 'function')
++      throw new Error('a callback must be provided for exit handler')
+ 
+     if (loaded === false) {
+       load()
