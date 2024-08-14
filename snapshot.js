@@ -15,3 +15,5 @@ require('mkdirp');
   require('graceful-fs/legacy-streams');
   require('graceful-fs/clone');
 require('imurmurhash');
+// TODO(RaisinTen): Can we add require('signal-exit');?
+require('signal-exit/signals');
