@@ -1,6 +1,7 @@
 require('./v8-snapshots-util.js');
 
 const { TraceEvents, trackRequires } = require('perftrace');
+const { performance } = require('node:perf_hooks');
 
 const traceEvents = new TraceEvents();
 
@@ -16,6 +17,8 @@ process.on('exit', () => {
   require('fs').writeFileSync('events.json', JSON.stringify(events));
 });
 
+performance.mark('requires');
+
 require('./unsnapshottable');
 
 const semver = require('semver');
@@ -26,8 +29,7 @@ const i18n = require('i18next');
 const jsonStorage = require('electron-json-storage');
 const uuidV4 = require('uuid/v4');
 
-const { performance } = require('node:perf_hooks');
-performance.measure('startup');
+performance.measure('requires', 'requires');
 
 function createWindow () {
   // Create the browser window.
@@ -68,3 +70,5 @@ app.on('window-all-closed', function () {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+
+performance.measure('startup');
