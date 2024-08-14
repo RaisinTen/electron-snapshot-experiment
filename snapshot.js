@@ -8,3 +8,9 @@ require('i18next');
 require('electron-json-storage/node_modules/async');
 require('rimraf');
 require('mkdirp');
+
+// Snapshottable dependencies of 'write-file-atomic'.
+  // Snapshottable dependencies of 'graceful-fs'.
+  // TODO(RaisinTen): Why does require('graceful-fs/polyfills'); not work?
+  require('graceful-fs/legacy-streams');
+  require('graceful-fs/clone');
