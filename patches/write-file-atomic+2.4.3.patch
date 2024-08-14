@@ -1,0 +1,27 @@
+diff --git a/node_modules/write-file-atomic/index.js b/node_modules/write-file-atomic/index.js
+index 64ae987..dfb5c5e 100644
+--- a/node_modules/write-file-atomic/index.js
++++ b/node_modules/write-file-atomic/index.js
+@@ -10,19 +10,9 @@ var onExit = require('signal-exit')
+ var path = require('path')
+ var activeFiles = {}
+ 
+-// if we run inside of a worker_thread, `process.pid` is not unique
+-/* istanbul ignore next */
+-var threadId = (function getId () {
+-  try {
+-    var workerThreads = require('worker_threads')
+-
+-    /// if we are in main thread, this is set to `0`
+-    return workerThreads.threadId
+-  } catch (e) {
+-    // worker_threads are not available, fallback to 0
+-    return 0
+-  }
+-})()
++// The 'write-file-atomic' module is only used by 'electron-json-storage' and
++// which is never invoked inside a worker_thread, so set the threadId to 0.
++var threadId = 0
+ 
+ var invocations = 0
+ function getTmpname (filename) {
