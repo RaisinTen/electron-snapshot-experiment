@@ -14,3 +14,4 @@ require('mkdirp');
   // TODO(RaisinTen): Why does require('graceful-fs/polyfills'); not work?
   require('graceful-fs/legacy-streams');
   require('graceful-fs/clone');
+require('imurmurhash');
