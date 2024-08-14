@@ -17,3 +17,5 @@ require('mkdirp');
 require('imurmurhash');
 // TODO(RaisinTen): Can we add require('signal-exit');?
 require('signal-exit/signals');
+
+require('electron-json-storage/lib/utils');

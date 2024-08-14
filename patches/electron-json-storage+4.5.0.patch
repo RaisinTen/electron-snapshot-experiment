@@ -1,0 +1,23 @@
+diff --git a/node_modules/electron-json-storage/lib/utils.js b/node_modules/electron-json-storage/lib/utils.js
+index 925f34d..8393f44 100644
+--- a/node_modules/electron-json-storage/lib/utils.js
++++ b/node_modules/electron-json-storage/lib/utils.js
+@@ -26,8 +26,6 @@
+ 
+ const _ = require('lodash');
+ const path = require('path');
+-const electron = require('electron');
+-const app = electron.app || (electron.remote && electron.remote.app) || null;
+ 
+ /**
+  * @summary Get the default data path
+@@ -40,6 +38,9 @@ const app = electron.app || (electron.remote && electron.remote.app) || null;
+  * const defaultDataPath = utils.getDefaultDataPath()
+  */
+ exports.getDefaultDataPath = function() {
++  const electron = require('electron');
++  const app = electron.app || (electron.remote && electron.remote.app) || null;
++
+   if (!app) {
+     return null;
+   }
