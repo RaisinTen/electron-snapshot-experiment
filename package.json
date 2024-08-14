@@ -22,6 +22,7 @@
     "electron-json-storage": "4.5.0",
     "i18next": "23.5.1",
     "lodash": "4.17.21",
+    "nedb": "1.8.0",
     "perftrace": "^1.2.1",
     "semver": "5.5.1",
     "uuid": "3.3.2"
