@@ -24,6 +24,7 @@ const _ = require('lodash');
 const async = require('async');
 const i18n = require('i18next');
 const jsonStorage = require('electron-json-storage');
+const uuidV4 = require('uuid/v4');
 
 const { performance } = require('node:perf_hooks');
 performance.measure('startup');
