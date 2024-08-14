@@ -16,3 +16,18 @@
   const path = require('node:path');
   minimatch.sep = path.sep
 }
+
+// Since `util.debuglog` and 'signal-exit' are not a part of the V8 snapshot,
+// the code from the 'lockfile' module that uses these have been moved here.
+{
+  const util = require('util')
+  const debug = util.debuglog('LOCKFILE')
+
+  const onExit = require('signal-exit')
+  onExit(function () {
+    const { locks, unlockSync } = require('lockfile');
+    debug('exit listener')
+    // cleanup
+    Object.keys(locks).forEach(unlockSync)
+  })
+}

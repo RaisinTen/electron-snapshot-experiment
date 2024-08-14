@@ -1,0 +1,137 @@
+diff --git a/node_modules/lockfile/lockfile.js b/node_modules/lockfile/lockfile.js
+index f037bec..50c38b6 100644
+--- a/node_modules/lockfile/lockfile.js
++++ b/node_modules/lockfile/lockfile.js
+@@ -1,28 +1,18 @@
+ var fs = require('fs')
+ 
+ var wx = 'wx'
+-if (process.version.match(/^v0\.[0-6]/)) {
+-  var c = require('constants')
+-  wx = c.O_TRUNC | c.O_CREAT | c.O_WRONLY | c.O_EXCL
+-}
+ 
+-var os = require('os')
+ exports.filetime = 'ctime'
+-if (os.platform() == "win32") {
++if (process.platform == "win32") {
+   exports.filetime = 'mtime'
+ }
+ 
+ var debug
+ var util = require('util')
+-if (util.debuglog)
++function initDebug() {
++  if (debug) return;
+   debug = util.debuglog('LOCKFILE')
+-else if (/\blockfile\b/i.test(process.env.NODE_DEBUG))
+-  debug = function() {
+-    var msg = util.format.apply(util, arguments)
+-    console.error('LOCKFILE %d %s', process.pid, msg)
+-  }
+-else
+-  debug = function() {}
++}
+ 
+ var locks = {}
+ 
+@@ -30,32 +20,11 @@ function hasOwnProperty (obj, prop) {
+   return Object.prototype.hasOwnProperty.call(obj, prop)
+ }
+ 
+-var onExit = require('signal-exit')
+-onExit(function () {
+-  debug('exit listener')
+-  // cleanup
+-  Object.keys(locks).forEach(exports.unlockSync)
+-})
+-
+-// XXX https://github.com/joyent/node/issues/3555
+-// Remove when node 0.8 is deprecated.
+-if (/^v0\.[0-8]\./.test(process.version)) {
+-  debug('uncaughtException, version = %s', process.version)
+-  process.on('uncaughtException', function H (er) {
+-    debug('uncaughtException')
+-    var l = process.listeners('uncaughtException').filter(function (h) {
+-      return h !== H
+-    })
+-    if (!l.length) {
+-      // cleanup
+-      try { Object.keys(locks).forEach(exports.unlockSync) } catch (e) {}
+-      process.removeListener('uncaughtException', H)
+-      throw er
+-    }
+-  })
+-}
++// So that locks can be used in the onExit handler of unsnapshottable.js.
++exports.locks = locks
+ 
+ exports.unlock = function (path, cb) {
++  initDebug()
+   debug('unlock', path)
+   // best-effort.  unlocking an already-unlocked lock is a noop
+   delete locks[path]
+@@ -63,6 +32,7 @@ exports.unlock = function (path, cb) {
+ }
+ 
+ exports.unlockSync = function (path) {
++  initDebug()
+   debug('unlockSync', path)
+   // best-effort.  unlocking an already-unlocked lock is a noop
+   try { fs.unlinkSync(path) } catch (er) {}
+@@ -74,6 +44,7 @@ exports.unlockSync = function (path) {
+ // if the error is something other than ENOENT, then it's not.
+ exports.check = function (path, opts, cb) {
+   if (typeof opts === 'function') cb = opts, opts = {}
++  initDebug()
+   debug('check', path, opts)
+   fs.open(path, 'r', function (er, fd) {
+     if (er) {
+@@ -102,6 +73,7 @@ exports.check = function (path, opts, cb) {
+ 
+ exports.checkSync = function (path, opts) {
+   opts = opts || {}
++  initDebug()
+   debug('checkSync', path, opts)
+   if (opts.wait) {
+     throw new Error('opts.wait not supported sync for obvious reasons')
+@@ -137,6 +109,7 @@ var req = 1
+ exports.lock = function (path, opts, cb) {
+   if (typeof opts === 'function') cb = opts, opts = {}
+   opts.req = opts.req || req++
++  initDebug()
+   debug('lock', path, opts)
+   opts.start = opts.start || Date.now()
+ 
+@@ -201,6 +174,7 @@ exports.lock = function (path, opts, cb) {
+ // 7. unlink $lock.STALE
+ // On any failure, clean up whatever we've done, and raise the error.
+ function maybeStale (originalEr, path, opts, hasStaleLock, cb) {
++  initDebug()
+   fs.stat(path, function (statEr, st) {
+     if (statEr) {
+       if (statEr.code === 'ENOENT') {
+@@ -239,6 +213,7 @@ function maybeStale (originalEr, path, opts, hasStaleLock, cb) {
+ }
+ 
+ function notStale (er, path, opts, cb) {
++  initDebug()
+   debug('notStale', path, opts)
+ 
+   // if we can't wait, then just call it a failure
+@@ -268,6 +243,7 @@ function notStale (er, path, opts, cb) {
+ exports.lockSync = function (path, opts) {
+   opts = opts || {}
+   opts.req = opts.req || req++
++  initDebug()
+   debug('lockSync', path, opts)
+   if (opts.wait || opts.retryWait) {
+     throw new Error('opts.wait not supported sync for obvious reasons')
+@@ -309,6 +285,7 @@ exports.lockSync = function (path, opts) {
+ }
+ 
+ function retryThrow (path, opts, er) {
++  initDebug()
+   if (typeof opts.retries === 'number' && opts.retries > 0) {
+     var newRT = opts.retries - 1
+     debug('retryThrow', path, opts, newRT)

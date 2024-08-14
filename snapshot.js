@@ -19,3 +19,4 @@ require('imurmurhash');
 require('signal-exit/signals');
 
 require('electron-json-storage/lib/utils');
+require('electron-json-storage/lib/lock');
