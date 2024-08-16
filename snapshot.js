@@ -37,4 +37,5 @@ require('uuid/v4');
 // Snapshottable dependencies of 'nedb'
 {
   require('nedb/lib/customUtils');
+  require('nedb/lib/model');
 }
