@@ -40,3 +40,16 @@ const util = require('node:util');
   const { BinarySearchTree, AVLTree } = require('binary-search-tree');
   util.inherits(AVLTree._AVLTree, BinarySearchTree);
 }
+
+// Move the code for attaching the fs module methods from 'nedb/lib/storage' to
+// here because the fs module is not available in the V8 snapshot.
+{
+  const fs = require('node:fs');
+  const storage = require('nedb/lib/storage');
+  storage.exists = fs.exists;
+  storage.rename = fs.rename;
+  storage.writeFile = fs.writeFile;
+  storage.unlink = fs.unlink;
+  storage.appendFile = fs.appendFile;
+  storage.readFile = fs.readFile;
+}

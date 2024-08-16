@@ -41,4 +41,5 @@ require('uuid/v4');
   require('nedb/node_modules/async');
   require('nedb/lib/executor');
   require('nedb/lib/indexes');
+  require('nedb/lib/persistence');
 }
