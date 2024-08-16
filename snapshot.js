@@ -33,14 +33,4 @@ require('i18next');
 }
 
 require('uuid/v4');
-
-// Snapshottable dependencies of 'nedb'
-{
-  require('nedb/lib/customUtils');
-  require('nedb/lib/model');
-  require('nedb/node_modules/async');
-  require('nedb/lib/executor');
-  require('nedb/lib/indexes');
-  require('nedb/lib/persistence');
-  require('nedb/lib/cursor');
-}
+require('nedb')

@@ -1,12 +1,12 @@
 const util = require('node:util');
+const { EventEmitter } = require('node:events');
 
 // Make require('glob').Glob inherit from EventEmitter. This needs to be done
 // here because EventEmitter is not a part of the default V8 context which is
 // used to generate the V8 snapshot.
 {
   const glob = require('glob');
-  const EE = require('node:events').EventEmitter;
-  util.inherits(glob.Glob, EE);
+  util.inherits(glob.Glob, EventEmitter);
 }
 
 // Set minimatch.sep with path.sep. This needs to be done here because the
@@ -52,4 +52,13 @@ const util = require('node:util');
   storage.unlink = fs.unlink;
   storage.appendFile = fs.appendFile;
   storage.readFile = fs.readFile;
+}
+
+// Make require('nedb/lib/datastore') inherit from
+// require('events').EventEmitter. This needs to be done here because
+// util.inherits() is not a part of the default V8 context which is used to
+// generate the V8 snapshot.
+{
+  const Datastore = require('nedb/lib/datastore');
+  util.inherits(Datastore, EventEmitter);
 }
