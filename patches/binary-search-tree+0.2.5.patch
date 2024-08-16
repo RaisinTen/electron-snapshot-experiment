@@ -1,0 +1,16 @@
+diff --git a/node_modules/binary-search-tree/lib/avltree.js b/node_modules/binary-search-tree/lib/avltree.js
+index 8d0b95b..58deff5 100644
+--- a/node_modules/binary-search-tree/lib/avltree.js
++++ b/node_modules/binary-search-tree/lib/avltree.js
+@@ -43,11 +43,6 @@ function _AVLTree (options) {
+ }
+ 
+ 
+-/**
+- * Inherit basic functions from the basic binary search tree
+- */
+-util.inherits(_AVLTree, BinarySearchTree);
+-
+ /**
+  * Keep a pointer to the internal tree constructor for testing purposes
+  */
