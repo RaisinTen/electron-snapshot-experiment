@@ -29,6 +29,7 @@ const i18n = require('i18next');
 const jsonStorage = require('electron-json-storage');
 const uuidV4 = require('uuid/v4');
 const nedb = require('nedb');
+// TODO(RaisinTen): Add: const sentry = require('@sentry/node');
 
 performance.measure('requires', 'requires');
 
