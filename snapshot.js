@@ -38,4 +38,5 @@ require('uuid/v4');
 {
   require('nedb/lib/customUtils');
   require('nedb/lib/model');
+  require('nedb/node_modules/async');
 }
