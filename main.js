@@ -30,6 +30,7 @@ const jsonStorage = require('electron-json-storage');
 const uuidV4 = require('uuid/v4');
 const nedb = require('nedb');
 // TODO(RaisinTen): Add: const sentry = require('@sentry/node');
+const sh = require('shelljs');
 
 performance.measure('requires', 'requires');
 
