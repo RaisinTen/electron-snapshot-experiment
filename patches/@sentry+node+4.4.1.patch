@@ -1,0 +1,18 @@
+diff --git a/node_modules/@sentry/node/dist/parsers.js b/node_modules/@sentry/node/dist/parsers.js
+index 45e5984..bebacc7 100644
+--- a/node_modules/@sentry/node/dist/parsers.js
++++ b/node_modules/@sentry/node/dist/parsers.js
+@@ -18,11 +18,11 @@ function getFunction(frame) {
+         return '<anonymous>';
+     }
+ }
+-var mainModule = ((require.main && require.main.filename && path_1.dirname(require.main.filename)) ||
+-    global.process.cwd()) + "/";
+ /** JSDoc */
+ function getModule(filename, base) {
+     if (!base) {
++        var mainModule = ((require.main && require.main.filename && path_1.dirname(require.main.filename)) ||
++            global.process.cwd()) + "/";
+         base = mainModule; // tslint:disable-line:no-parameter-reassignment
+     }
+     // It's specifically a module

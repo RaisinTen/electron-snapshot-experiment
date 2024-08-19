@@ -40,6 +40,9 @@ require('nedb');
   require('tslib');
   require('@sentry/types');
   require('@sentry/core');
+
+  // Snapshottable dependencies of '@sentry/node/dist/backend'
+  require('@sentry/node/dist/parsers');
 }
 
 require('shelljs');
