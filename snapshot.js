@@ -48,6 +48,14 @@ require('nedb');
     // Snapshottable dependencies of '@sentry/node/dist/transports'
     {
       require('@sentry/node/dist/transports/base');
+
+      // Snapshottable dependencies of '@sentry/node/dist/transports/http'
+      {
+        // Snapshottable dependencies of 'https-proxy-agent'
+        {
+          require('agent-base');
+        }
+      }
     }
   }
 }

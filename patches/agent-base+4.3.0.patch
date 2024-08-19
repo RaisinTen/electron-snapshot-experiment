@@ -1,0 +1,21 @@
+diff --git a/node_modules/agent-base/index.js b/node_modules/agent-base/index.js
+index 0ee6b29..44e651b 100644
+--- a/node_modules/agent-base/index.js
++++ b/node_modules/agent-base/index.js
+@@ -1,7 +1,5 @@
+ 'use strict';
+-require('./patch-core');
+-const inherits = require('util').inherits;
+-const promisify = require('es6-promisify');
++const { promisify } = require('util');
+ const EventEmitter = require('events').EventEmitter;
+ 
+ module.exports = Agent;
+@@ -40,7 +38,6 @@ function Agent(callback, _opts) {
+ 
+   this.options = opts;
+ }
+-inherits(Agent, EventEmitter);
+ 
+ /**
+  * Override this function in your subclass!
