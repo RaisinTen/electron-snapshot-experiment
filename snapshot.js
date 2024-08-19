@@ -37,7 +37,7 @@ require('nedb');
 
 // Snapshottable dependencies of '@sentry/node'
 {
-  // TODO(RaisinTen): Add require('@sentry/node');
+  require('tslib');
 }
 
 require('shelljs');
