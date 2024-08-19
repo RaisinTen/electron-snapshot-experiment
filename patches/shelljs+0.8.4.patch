@@ -1,0 +1,93 @@
+diff --git a/node_modules/shelljs/shell.js b/node_modules/shelljs/shell.js
+index f9c6f36..64061b9 100644
+--- a/node_modules/shelljs/shell.js
++++ b/node_modules/shelljs/shell.js
+@@ -21,15 +21,38 @@ var common = require('./src/common');
+ //@commands
+ 
+ // Load all default commands
+-require('./commands').forEach(function (command) {
+-  require('./src/' + command);
+-});
++require('./src/cat');
++require('./src/cd');
++require('./src/chmod');
++require('./src/cp');
++require('./src/dirs');
++require('./src/echo');
++require('./src/exec');
++require('./src/find');
++require('./src/grep');
++require('./src/head');
++require('./src/ln');
++require('./src/ls');
++require('./src/mkdir');
++require('./src/mv');
++require('./src/pwd');
++require('./src/rm');
++require('./src/sed');
++require('./src/set');
++require('./src/sort');
++require('./src/tail');
++require('./src/tempdir');
++require('./src/test');
++require('./src/to');
++require('./src/toEnd');
++require('./src/touch');
++require('./src/uniq');
++require('./src/which');
+ 
+ //@
+ //@ ### exit(code)
+ //@
+ //@ Exits the current process with the given exit `code`.
+-exports.exit = process.exit;
+ 
+ //@include ./src/error
+ exports.error = require('./src/error');
+@@ -42,7 +65,6 @@ exports.ShellString = common.ShellString;
+ //@
+ //@ Object containing environment variables (both getter and setter). Shortcut
+ //@ to `process.env`.
+-exports.env = process.env;
+ 
+ //@
+ //@ ### Pipes
+diff --git a/node_modules/shelljs/src/common.js b/node_modules/shelljs/src/common.js
+index 64fa2fb..3fce330 100644
+--- a/node_modules/shelljs/src/common.js
++++ b/node_modules/shelljs/src/common.js
+@@ -12,7 +12,7 @@ var shellMethods = Object.create(shell);
+ exports.extend = Object.assign;
+ 
+ // Check if we're running under electron
+-var isElectron = Boolean(process.versions.electron);
++var isElectron = true
+ 
+ // Module globals (assume no execPath by default)
+ var DEFAULT_CONFIG = {
+@@ -50,7 +50,6 @@ var state = {
+ };
+ exports.state = state;
+ 
+-delete process.env.OLDPWD; // initially, there's no previous directory
+ 
+ // Reliably test if something is any sort of javascript object
+ function isObject(a) {
+@@ -252,13 +251,9 @@ exports.expand = expand;
+ 
+ // Normalizes Buffer creation, using Buffer.alloc if possible.
+ // Also provides a good default buffer length for most use cases.
+-var buffer = typeof Buffer.alloc === 'function' ?
+-  function (len) {
+-    return Buffer.alloc(len || config.bufLength);
+-  } :
+-  function (len) {
+-    return new Buffer(len || config.bufLength);
+-  };
++var buffer = function (len) {
++  return Buffer.alloc(len || config.bufLength);
++};
+ exports.buffer = buffer;
+ 
+ // Normalizes _unlinkSync() across platforms to match Unix behavior, i.e.

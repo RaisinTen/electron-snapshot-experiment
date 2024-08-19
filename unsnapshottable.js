@@ -62,3 +62,14 @@ const { EventEmitter } = require('node:events');
   const Datastore = require('nedb/lib/datastore');
   util.inherits(Datastore, EventEmitter);
 }
+
+// Move code to capture process.exit and process.env and delete
+// process.env.OLDPWD from 'shelljs' to here because these are not available in
+// the V8 snapshot.
+{
+  const sh = require('shelljs');
+  sh.exit = process.exit;
+  sh.env = process.env;
+
+  delete process.env.OLDPWD; // initially, there's no previous directory
+}

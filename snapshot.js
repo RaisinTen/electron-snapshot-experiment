@@ -33,6 +33,8 @@ require('i18next');
 }
 
 require('uuid/v4');
-require('nedb')
+require('nedb');
 
 // TODO(RaisinTen): Add: require('@sentry/node');
+
+require('shelljs');
