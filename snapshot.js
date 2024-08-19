@@ -39,6 +39,7 @@ require('nedb');
 {
   require('tslib');
   require('@sentry/types');
+  require('@sentry/core');
 }
 
 require('shelljs');
