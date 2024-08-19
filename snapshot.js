@@ -54,6 +54,7 @@ require('nedb');
         // Snapshottable dependencies of 'https-proxy-agent'
         {
           require('agent-base');
+          // TODO(RaisinTen): Add require('debug');
         }
       }
     }
