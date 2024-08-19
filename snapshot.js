@@ -42,7 +42,14 @@ require('nedb');
   require('@sentry/core');
 
   // Snapshottable dependencies of '@sentry/node/dist/backend'
-  require('@sentry/node/dist/parsers');
+  {
+    require('@sentry/node/dist/parsers');
+
+    // Snapshottable dependencies of '@sentry/node/dist/transports'
+    {
+      require('@sentry/node/dist/transports/base');
+    }
+  }
 }
 
 require('shelljs');
