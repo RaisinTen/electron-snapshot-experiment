@@ -16,6 +16,7 @@
     "postinstall": "patch-package"
   },
   "dependencies": {
+    "@sentry/node": "4.4.1",
     "async": "1.5.2",
     "circular-json": "0.3.0",
     "electron": "28.3.1",

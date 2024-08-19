@@ -35,6 +35,9 @@ require('i18next');
 require('uuid/v4');
 require('nedb');
 
-// TODO(RaisinTen): Add: require('@sentry/node');
+// Snapshottable dependencies of '@sentry/node'
+{
+  // TODO(RaisinTen): Add require('@sentry/node');
+}
 
 require('shelljs');
