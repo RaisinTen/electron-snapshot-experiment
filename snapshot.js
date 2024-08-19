@@ -38,6 +38,7 @@ require('nedb');
 // Snapshottable dependencies of '@sentry/node'
 {
   require('tslib');
+  require('@sentry/types');
 }
 
 require('shelljs');
