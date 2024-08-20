@@ -1,5 +1,6 @@
 const util = require('node:util');
 const { EventEmitter } = require('node:events');
+const Agent = require('agent-base');
 
 // Make require('glob').Glob inherit from EventEmitter. This needs to be done
 // here because EventEmitter is not a part of the default V8 context which is
@@ -79,6 +80,13 @@ const { EventEmitter } = require('node:events');
 // used to generate the V8 snapshot. Also, runs 'agent-base/patch-core'.
 {
   require('agent-base/patch-core')
-  const Agent = require('agent-base');
   util.inherits(Agent, EventEmitter);
+}
+
+// Make require('https-proxy-agent') inherit from Agent. This needs to be done
+// here because util.inherits() is not a part of the default V8 context which is
+// used to generate the V8 snapshot.
+{
+  const HttpsProxyAgent = require('https-proxy-agent');
+  util.inherits(HttpsProxyAgent, Agent);
 }

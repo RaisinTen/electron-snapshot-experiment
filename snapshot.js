@@ -52,11 +52,7 @@ require('nedb');
       // Snapshottable dependencies of '@sentry/node/dist/transports/http'
       // and '@sentry/node/dist/transports/https'
       {
-        // Snapshottable dependencies of 'https-proxy-agent'
-        {
-          require('agent-base');
-          // TODO(RaisinTen): Add require('debug');
-        }
+        require('https-proxy-agent');
       }
     }
   }

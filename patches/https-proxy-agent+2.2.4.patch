@@ -1,16 +1,52 @@
 diff --git a/node_modules/https-proxy-agent/index.js b/node_modules/https-proxy-agent/index.js
-index 817a0a9..2a245a7 100644
+index 817a0a9..2e053da 100644
 --- a/node_modules/https-proxy-agent/index.js
 +++ b/node_modules/https-proxy-agent/index.js
-@@ -5,7 +5,6 @@
+@@ -5,10 +5,16 @@
  var net = require('net');
  var tls = require('tls');
  var url = require('url');
 -var assert = require('assert');
  var Agent = require('agent-base');
- var inherits = require('util').inherits;
- var debug = require('debug')('https-proxy-agent');
-@@ -184,7 +183,7 @@ HttpsProxyAgent.prototype.callback = function connect(req, opts, fn) {
+-var inherits = require('util').inherits;
+-var debug = require('debug')('https-proxy-agent');
++var debug;
++function initDebug() {
++  if (debug) return;
++  // TODO(RaisinTen): Add the 'debug' module to the V8 snapshot.
++  // The code is written this way to make sure that the 'debug' module is not
++  // loaded into the V8 snapshot.
++  const debugModule = 'debug';
++  debug = require(debugModule)('https-proxy-agent');
++}
+ 
+ /**
+  * Module exports.
+@@ -30,6 +36,7 @@ function HttpsProxyAgent(opts) {
+ 		throw new Error(
+ 			'an HTTP(S) proxy server `host` and `port` must be specified!'
+ 		);
++  initDebug();
+ 	debug('creating new HttpsProxyAgent instance: %o', opts);
+ 	Agent.call(this, opts);
+ 
+@@ -61,7 +68,6 @@ function HttpsProxyAgent(opts) {
+ 	this.proxy = proxy;
+ 	this.defaultPort = 443;
+ }
+-inherits(HttpsProxyAgent, Agent);
+ 
+ /**
+  * Called when the node-core HTTP client library is creating a new HTTP request.
+@@ -70,6 +76,7 @@ inherits(HttpsProxyAgent, Agent);
+  */
+ 
+ HttpsProxyAgent.prototype.callback = function connect(req, opts, fn) {
++  initDebug();
+ 	var proxy = this.proxy;
+ 
+ 	// create a socket connection to the proxy server
+@@ -184,7 +191,7 @@ HttpsProxyAgent.prototype.callback = function connect(req, opts, fn) {
  
  	function onsocket(socket) {
  		debug('replaying proxy buffer for failed request');
