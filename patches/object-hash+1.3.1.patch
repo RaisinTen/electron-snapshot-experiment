@@ -1,0 +1,27 @@
+diff --git a/node_modules/object-hash/index.js b/node_modules/object-hash/index.js
+index 0b1b169..efe1c97 100644
+--- a/node_modules/object-hash/index.js
++++ b/node_modules/object-hash/index.js
+@@ -54,8 +54,12 @@ exports.keysMD5 = function(object){
+ };
+ 
+ // Internals
+-var hashes = crypto.getHashes ? crypto.getHashes().slice() : ['sha1', 'md5'];
+-hashes.push('passthrough');
++var hashes;
++function initHashes() {
++  if (hashes) return;
++  hashes = crypto.getHashes ? crypto.getHashes().slice() : ['sha1', 'md5'];
++  hashes.push('passthrough');
++}
+ var encodings = ['buffer', 'hex', 'binary', 'base64'];
+ 
+ function applyDefaults(object, options){
+@@ -81,6 +85,7 @@ function applyDefaults(object, options){
+ 
+   // if there is a case-insensitive match in the hashes list, accept it
+   // (i.e. SHA256 for sha256)
++  initHashes();
+   for (var i = 0; i < hashes.length; ++i) {
+     if (hashes[i].toLowerCase() === options.algorithm.toLowerCase()) {
+       options.algorithm = hashes[i];

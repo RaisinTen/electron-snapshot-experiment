@@ -37,3 +37,8 @@ require('nedb');
 require('@sentry/node');
 require('shelljs');
 require('sudo-prompt');
+
+// Snapshottable dependencies of 'serialised-error'
+{
+  require('object-hash');
+}
