@@ -40,22 +40,7 @@ require('nedb');
   require('tslib');
   require('@sentry/types');
   require('@sentry/core');
-
-  // Snapshottable dependencies of '@sentry/node/dist/backend'
-  {
-    require('@sentry/node/dist/parsers');
-
-    // Snapshottable dependencies of '@sentry/node/dist/transports'
-    {
-      require('@sentry/node/dist/transports/base');
-
-      // Snapshottable dependencies of '@sentry/node/dist/transports/http'
-      // and '@sentry/node/dist/transports/https'
-      {
-        require('https-proxy-agent');
-      }
-    }
-  }
+  require('@sentry/node/dist/backend');
 }
 
 require('shelljs');
