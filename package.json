@@ -26,6 +26,7 @@
     "i18next": "23.5.1",
     "lodash": "4.17.21",
     "nedb": "1.8.0",
+    "node-ipc": "9.1.1",
     "perftrace": "^1.2.1",
     "semver": "5.5.1",
     "serialised-error": "1.1.3",

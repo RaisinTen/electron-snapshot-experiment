@@ -36,6 +36,7 @@ const SerializedError = require('serialised-error');
 const initializeUpdater = require('@postman/app-updater').init;
 const { WebSocketServer } = require('ws');
 const { encryptAES, decryptAES } = require('@raisinten/aes-crypto-js');
+const ipc = require('node-ipc');
 
 performance.measure('requires', 'requires');
 

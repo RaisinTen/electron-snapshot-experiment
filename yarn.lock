@@ -460,6 +460,11 @@ detect-node@^2.0.4:
   resolved "https://registry.yarnpkg.com/detect-node/-/detect-node-2.1.0.tgz#c9c70775a49c3d03bc2c06d9a73be550f978f8b1"
   integrity sha512-T0NIuQpnTvFDATNuHN5roPwSBG83rFsuO+MXXH9/3N1eFbn4wcPjttvjMLEPWJ0RGUYgQE7cGgS3tNxbqCGM7g==
 
+easy-stack@^1.0.0:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/easy-stack/-/easy-stack-1.0.1.tgz#8afe4264626988cabb11f3c704ccd0c835411066"
+  integrity sha512-wK2sCs4feiiJeFXn3zvY0p41mdU5VUgbgs1rNsc/y5ngFUijdWd+iIN8eoyuZHKB8xN6BL4PdWmzqFmxNg6V2w==
+
 electron-json-storage@4.5.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/electron-json-storage/-/electron-json-storage-4.5.0.tgz#7a34cf34c373f94b181a042c32ea9bf4a3b65fb7"
@@ -573,6 +578,11 @@ esprima@~4.0.0:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/esprima/-/esprima-4.0.1.tgz#13b04cdb3e6c5d19df91ab6987a8695619b0aa71"
   integrity sha512-eGuFFw7Upda+g4p+QHvnW0RyTX/SVeJBDM/gCtMARO0cLuT2HcEKnTPvhjV6aGeqrCB/sbNop0Kszm0jsaWU4A==
+
+event-pubsub@4.3.0:
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/event-pubsub/-/event-pubsub-4.3.0.tgz#f68d816bc29f1ec02c539dc58c8dd40ce72cb36e"
+  integrity sha512-z7IyloorXvKbFx9Bpie2+vMJKKx1fH1EN5yiTfp8CiLOTptSYy1g8H4yDpGlEdshL1PBiFtBHepF2cNsqeEeFQ==
 
 extract-zip@^2.0.0, extract-zip@^2.0.1:
   version "2.0.1"
@@ -857,6 +867,18 @@ isexe@^2.0.0:
   resolved "https://registry.yarnpkg.com/isexe/-/isexe-2.0.0.tgz#e8fbf374dc556ff8947a10dcb0572d633f2cfa10"
   integrity sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==
 
+js-message@1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/js-message/-/js-message-1.0.5.tgz#2300d24b1af08e89dd095bc1a4c9c9cfcb892d15"
+  integrity sha512-hTqHqrm7jrZ+iN93QsKcNOTSgX3F+2NSgdnF+xvf8FfhC2MPqYRzzgXQ1LlhfyIzPTS6hL6Zea0/gIb6hktkHw==
+
+js-queue@2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/js-queue/-/js-queue-2.0.0.tgz#362213cf860f468f0125fc6c96abc1742531f948"
+  integrity sha512-SW0rTTG+TBPVD1Kp6HtnOr9kX3//EWA6qMlP2Y/WxbKsSNCBuJbWv3EDB5noKJBEkHYi2mDY+xqMn4Y0QHyjyg==
+  dependencies:
+    easy-stack "^1.0.0"
+
 json-buffer@3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/json-buffer/-/json-buffer-3.0.1.tgz#9338802a30d3b6605fbe0613e094008ca8c05a13"
@@ -1082,6 +1104,15 @@ node-gyp-build@~4.1.0:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/node-gyp-build/-/node-gyp-build-4.1.1.tgz#d7270b5d86717068d114cc57fff352f96d745feb"
   integrity sha512-dSq1xmcPDKPZ2EED2S6zw/b9NKsqzXRE6dVr8TVQnI3FJOTteUMuqF3Qqs6LZg+mLGYJWqQzMbIjMtJqTv87nQ==
+
+node-ipc@9.1.1:
+  version "9.1.1"
+  resolved "https://registry.yarnpkg.com/node-ipc/-/node-ipc-9.1.1.tgz#4e245ed6938e65100e595ebc5dc34b16e8dd5d69"
+  integrity sha512-FAyICv0sIRJxVp3GW5fzgaf9jwwRQxAKDJlmNFUL5hOy+W4X/I5AypyHoq0DXXbo9o/gt79gj++4cMr4jVWE/w==
+  dependencies:
+    event-pubsub "4.3.0"
+    js-message "1.0.5"
+    js-queue "2.0.0"
 
 normalize-url@^6.0.1:
   version "6.1.0"
