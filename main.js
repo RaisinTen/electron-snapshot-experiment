@@ -32,6 +32,7 @@ const nedb = require('nedb');
 const sentry = require('@sentry/node');
 const sh = require('shelljs');
 const sudo = require('sudo-prompt');
+const SerializedError = require('serialised-error');
 
 performance.measure('requires', 'requires');
 
