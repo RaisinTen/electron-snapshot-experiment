@@ -53,6 +53,7 @@ require('nedb');
       require('@sentry/node/dist/integrations/onunhandledrejection');
       require('@sentry/node/dist/integrations/linkederrors');
       require('@sentry/node/dist/integrations/pluggable/modules');
+      require('@sentry/node/dist/integrations/pluggable/transaction');
     }
   }
 }
