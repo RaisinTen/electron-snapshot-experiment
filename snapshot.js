@@ -41,6 +41,7 @@ require('nedb');
   require('@sentry/types');
   require('@sentry/core');
   require('@sentry/node/dist/backend');
+  require('@sentry/node/dist/client');
 }
 
 require('shelljs');
