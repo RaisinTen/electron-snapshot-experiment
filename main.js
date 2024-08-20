@@ -31,6 +31,7 @@ const uuidV4 = require('uuid/v4');
 const nedb = require('nedb');
 const sentry = require('@sentry/node');
 const sh = require('shelljs');
+const sudo = require('sudo-prompt');
 
 performance.measure('requires', 'requires');
 
