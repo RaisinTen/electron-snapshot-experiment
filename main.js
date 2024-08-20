@@ -33,6 +33,7 @@ const sentry = require('@sentry/node');
 const sh = require('shelljs');
 const sudo = require('sudo-prompt');
 const SerializedError = require('serialised-error');
+const initializeUpdater = require('@postman/app-updater').init;
 
 performance.measure('requires', 'requires');
 
