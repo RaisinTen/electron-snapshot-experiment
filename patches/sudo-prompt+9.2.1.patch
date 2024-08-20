@@ -1,0 +1,39 @@
+diff --git a/node_modules/sudo-prompt/index.js b/node_modules/sudo-prompt/index.js
+index acfd41b..750a0fc 100644
+--- a/node_modules/sudo-prompt/index.js
++++ b/node_modules/sudo-prompt/index.js
+@@ -1,12 +1,17 @@
+-var Node = {
+-  child: require('child_process'),
+-  crypto: require('crypto'),
+-  fs: require('fs'),
+-  os: require('os'),
+-  path: require('path'),
+-  process: process,
+-  util: require('util')
+-};
++var Node;
++
++function initNode() {
++  if (Node) return;
++  Node = {
++    child: require('child_process'),
++    crypto: require('crypto'),
++    fs: require('fs'),
++    os: require('os'),
++    path: require('path'),
++    process: process,
++    util: require('util')
++  };
++}
+ 
+ function Attempt(instance, end) {
+   var platform = Node.process.platform;
+@@ -22,6 +27,7 @@ function EscapeDoubleQuotes(string) {
+ }
+ 
+ function Exec() {
++  initNode();
+   if (arguments.length < 1 || arguments.length > 3) {
+     throw new Error('Wrong number of arguments.');
+   }

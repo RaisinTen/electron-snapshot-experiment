@@ -36,3 +36,4 @@ require('uuid/v4');
 require('nedb');
 require('@sentry/node');
 require('shelljs');
+require('sudo-prompt');
