@@ -40,3 +40,5 @@ require('sudo-prompt');
 require('serialised-error');
 
 // TODO(RaisinTen): Can we add require('@postman/app-updater');?
+
+// TODO(RaisinTen): Can we add require('ws');?
