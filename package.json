@@ -16,6 +16,7 @@
     "postinstall": "patch-package"
   },
   "dependencies": {
+    "@postman/app-logger": "2.0.0",
     "@postman/app-updater": "1.0.10",
     "@raisinten/aes-crypto-js": "0.0.2",
     "@sentry/node": "4.4.1",

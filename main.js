@@ -37,6 +37,7 @@ const initializeUpdater = require('@postman/app-updater').init;
 const { WebSocketServer } = require('ws');
 const { encryptAES, decryptAES } = require('@raisinten/aes-crypto-js');
 const ipc = require('node-ipc');
+const { Originator, Collectors } = require('@postman/app-logger');
 
 performance.measure('requires', 'requires');
 
