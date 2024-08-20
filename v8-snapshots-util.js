@@ -34,6 +34,6 @@ if (typeof snapshotResult !== 'undefined') {
     undefined /* window */,
     undefined /* document */,
     console,
-    global.require
+    require
   )
 }
