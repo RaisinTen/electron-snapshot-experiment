@@ -52,6 +52,11 @@ require('nedb');
       require('@sentry/node/dist/integrations/onuncaughtexception');
       require('@sentry/node/dist/integrations/onunhandledrejection');
       require('@sentry/node/dist/integrations/linkederrors');
+
+      // Snapshottable dependencies of '@sentry/node/dist/integrations/pluggable/modules'
+      {
+        require('lsmod');
+      }
     }
   }
 }

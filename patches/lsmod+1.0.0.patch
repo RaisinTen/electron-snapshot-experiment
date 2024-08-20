@@ -1,0 +1,41 @@
+diff --git a/node_modules/lsmod/index.js b/node_modules/lsmod/index.js
+index 42a9be6..50f4c6a 100644
+--- a/node_modules/lsmod/index.js
++++ b/node_modules/lsmod/index.js
+@@ -2,15 +2,6 @@
+ var fs = require('fs');
+ var path = require('path');
+ 
+-// node 0.6 support
+-fs.existsSync = fs.existsSync || path.existsSync;
+-
+-// main_paths are the paths where our mainprog will be able to load from
+-// we store these to avoid grabbing the modules that were loaded as a result
+-// of a dependency module loading its dependencies, we only care about deps our
+-// mainprog loads
+-var main_paths = require.main && require.main.paths || [];
+-
+ module.exports = function() {
+     var paths = Object.keys(require.cache || []);
+ 
+@@ -20,6 +11,12 @@ module.exports = function() {
+     // paths we have already inspected to avoid traversing again
+     var seen = {};
+ 
++    // main_paths are the paths where our mainprog will be able to load from
++    // we store these to avoid grabbing the modules that were loaded as a result
++    // of a dependency module loading its dependencies, we only care about deps our
++    // mainprog loads
++    var main_paths = require.main && require.main.paths || [];
++
+     paths.forEach(function(p) {
+         var dir = p;
+ 
+@@ -30,6 +27,7 @@ module.exports = function() {
+             if (!dir || orig === dir || seen[orig]) {
+                 return;
+             }
++
+             else if (main_paths.indexOf(dir) < 0) {
+                 return updir();
+             }
