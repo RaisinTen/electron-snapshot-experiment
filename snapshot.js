@@ -34,28 +34,5 @@ require('i18next');
 
 require('uuid/v4');
 require('nedb');
-
-// Snapshottable dependencies of '@sentry/node'
-{
-  require('tslib');
-  require('@sentry/types');
-  require('@sentry/core');
-  require('@sentry/node/dist/backend');
-  require('@sentry/node/dist/client');
-
-  // Snapshottable dependencies of '@sentry/node/dist/sdk'
-  {
-    // Snapshottable dependencies of '@sentry/node/dist/integrations'
-    {
-      require('@sentry/node/dist/integrations/console');
-      require('@sentry/node/dist/integrations/http');
-      require('@sentry/node/dist/integrations/onuncaughtexception');
-      require('@sentry/node/dist/integrations/onunhandledrejection');
-      require('@sentry/node/dist/integrations/linkederrors');
-      require('@sentry/node/dist/integrations/pluggable/modules');
-      require('@sentry/node/dist/integrations/pluggable/transaction');
-    }
-  }
-}
-
+require('@sentry/node');
 require('shelljs');
