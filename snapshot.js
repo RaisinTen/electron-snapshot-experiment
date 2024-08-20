@@ -48,6 +48,7 @@ require('nedb');
     // Snapshottable dependencies of '@sentry/node/dist/integrations'
     {
       require('@sentry/node/dist/integrations/console');
+      require('@sentry/node/dist/integrations/http');
     }
   }
 }
