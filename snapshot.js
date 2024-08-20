@@ -50,6 +50,7 @@ require('nedb');
       require('@sentry/node/dist/integrations/console');
       require('@sentry/node/dist/integrations/http');
       require('@sentry/node/dist/integrations/onuncaughtexception');
+      require('@sentry/node/dist/integrations/onunhandledrejection');
     }
   }
 }
