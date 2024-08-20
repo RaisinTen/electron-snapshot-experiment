@@ -38,6 +38,8 @@ const { WebSocketServer } = require('ws');
 const { encryptAES, decryptAES } = require('@raisinten/aes-crypto-js');
 const ipc = require('node-ipc');
 const { Originator, Collectors } = require('@postman/app-logger');
+const forge = require('node-forge');
+const pem = require('@postman/pem');
 
 performance.measure('requires', 'requires');
 
