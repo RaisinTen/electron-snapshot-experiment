@@ -51,6 +51,7 @@ require('nedb');
       require('@sentry/node/dist/integrations/http');
       require('@sentry/node/dist/integrations/onuncaughtexception');
       require('@sentry/node/dist/integrations/onunhandledrejection');
+      require('@sentry/node/dist/integrations/linkederrors');
     }
   }
 }
