@@ -1,0 +1,10 @@
+diff --git a/node_modules/@raisinten/aes-crypto-js/index.js b/node_modules/@raisinten/aes-crypto-js/index.js
+index f084c56..dc0d2c0 100644
+--- a/node_modules/@raisinten/aes-crypto-js/index.js
++++ b/node_modules/@raisinten/aes-crypto-js/index.js
+@@ -1,4 +1,4 @@
+-const crypto = require('node:crypto');
++const crypto = require('crypto');
+ 
+ // Refs: https://github.com/brix/crypto-js/issues/468#issuecomment-2060562277
+ function encryptAES(plainText, secret) {
