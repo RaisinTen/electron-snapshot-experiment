@@ -38,3 +38,5 @@ require('@sentry/node');
 require('shelljs');
 require('sudo-prompt');
 require('serialised-error');
+
+// TODO(RaisinTen): Can we add require('@postman/app-updater');?
