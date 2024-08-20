@@ -44,3 +44,5 @@ require('serialised-error');
 // TODO(RaisinTen): Can we add require('ws');?
 
 require('@raisinten/aes-crypto-js');
+
+// TODO(RaisinTen): Can we add require('node-ipc');?
