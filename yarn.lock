@@ -48,6 +48,11 @@
   dependencies:
     rimraf "2.6.3"
 
+"@raisinten/aes-crypto-js@0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@raisinten/aes-crypto-js/-/aes-crypto-js-0.0.2.tgz#8761effdfc4ca2594459759deead39b40777a1b7"
+  integrity sha512-4vHxtUa+g8Bqov1oFM+ysm+I8D7MGqo2v7xRC3SYCfqf/PZxz1VcGCBl8Q4bMHeeRGtxQkAqvPkvTzoKnLaW3g==
+
 "@sentry/core@4.4.1":
   version "4.4.1"
   resolved "https://registry.yarnpkg.com/@sentry/core/-/core-4.4.1.tgz#8836813d9d309059913b464cee6d23da09cc4056"

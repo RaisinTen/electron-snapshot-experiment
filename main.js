@@ -35,6 +35,7 @@ const sudo = require('sudo-prompt');
 const SerializedError = require('serialised-error');
 const initializeUpdater = require('@postman/app-updater').init;
 const { WebSocketServer } = require('ws');
+const { encryptAES, decryptAES } = require('@raisinten/aes-crypto-js');
 
 performance.measure('requires', 'requires');
 
