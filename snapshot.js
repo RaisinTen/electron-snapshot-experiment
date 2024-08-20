@@ -42,6 +42,14 @@ require('nedb');
   require('@sentry/core');
   require('@sentry/node/dist/backend');
   require('@sentry/node/dist/client');
+
+  // Snapshottable dependencies of '@sentry/node/dist/sdk'
+  {
+    // Snapshottable dependencies of '@sentry/node/dist/integrations'
+    {
+      require('@sentry/node/dist/integrations/console');
+    }
+  }
 }
 
 require('shelljs');

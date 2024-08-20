@@ -1,5 +1,18 @@
+diff --git a/node_modules/@sentry/node/dist/integrations/console.js b/node_modules/@sentry/node/dist/integrations/console.js
+index 98ef49a..81deb50 100644
+--- a/node_modules/@sentry/node/dist/integrations/console.js
++++ b/node_modules/@sentry/node/dist/integrations/console.js
+@@ -19,8 +19,6 @@ var Console = /** @class */ (function () {
+     Console.prototype.setupOnce = function () {
+         var nativeModule = require('module');
+         object_1.fill(nativeModule, '_load', loadWrapper(nativeModule));
+-        // special case: since console is built-in and app-level code won't require() it, do that here
+-        require('console');
+     };
+     /**
+      * @inheritDoc
 diff --git a/node_modules/@sentry/node/dist/parsers.js b/node_modules/@sentry/node/dist/parsers.js
-index 45e5984..bebacc7 100644
+index 45e5984..3a14dc5 100644
 --- a/node_modules/@sentry/node/dist/parsers.js
 +++ b/node_modules/@sentry/node/dist/parsers.js
 @@ -18,11 +18,11 @@ function getFunction(frame) {

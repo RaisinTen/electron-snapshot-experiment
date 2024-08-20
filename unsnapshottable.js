@@ -90,3 +90,11 @@ const Agent = require('agent-base');
   const HttpsProxyAgent = require('https-proxy-agent');
   util.inherits(HttpsProxyAgent, Agent);
 }
+
+// Move the code to the require the 'console' module from
+// 'node_modules/@sentry/node/dist/integrations/console.js to here because the
+// 'console' module is not available in the context of the V8 snapshot.
+{
+  // special case: since console is built-in and app-level code won't require() it, do that here
+  require('console');
+}
