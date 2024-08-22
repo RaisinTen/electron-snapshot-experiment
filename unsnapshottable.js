@@ -106,3 +106,11 @@ const Agent = require('agent-base');
   const AbstractUpdater = require('@postman/app-updater/lib/AbstractUpdater');
   util.inherits(AbstractUpdater, EventEmitter);
 }
+
+// Move the code for making LinuxAutoUpdater from
+// '@postman/app-updater/lib/autoUpdater/LinuxAutoUpdater' inherit from
+// EventEmitter here because EventEmitter is not a part of the V8 snapshot.
+{
+  const LinuxAutoUpdater = require('@postman/app-updater/lib/autoUpdater/LinuxAutoUpdater');
+  util.inherits(LinuxAutoUpdater, EventEmitter);
+}

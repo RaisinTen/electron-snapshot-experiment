@@ -44,10 +44,7 @@ require('serialised-error');
   require('@postman/app-updater/lib/WindowsUpdater');
   require('@postman/app-updater/lib/DarwinUpdater');
   require('@postman/app-updater/lib/LinuxUpdater');
-  // Snapshottable dependencies of '@postman/app-updater/lib/autoUpdater/LinuxAutoUpdater'
-  {
-    require('@postman/hermes');
-  }
+  require('@postman/app-updater/lib/autoUpdater/LinuxAutoUpdater');
 }
 
 // TODO(RaisinTen): Can we add require('ws');?
