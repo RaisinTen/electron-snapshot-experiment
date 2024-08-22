@@ -2,7 +2,6 @@ const { flipFuses, FuseVersion, FuseV1Options } = require('@electron/fuses')
 const path = require('path')
 const fs = require('fs')
 
-const snapshotFileName = 'snapshot_blob.bin'
 const v8ContextFileName = 'browser_v8_context_snapshot.bin'
 
 switch (process.platform) {
@@ -12,10 +11,10 @@ switch (process.platform) {
       '..',
       'node_modules/electron/dist/Electron.app/Contents/Frameworks/Electron Framework.framework/Versions/A/Resources'
     )
+    const pathToV8ContextFileName = path.join(pathToElectron, v8ContextFileName);
 
-    console.log('Removing v8 snapshot from', path.join(pathToElectron, snapshotFileName))
-    fs.unlinkSync(path.join(pathToElectron, snapshotFileName))
-    fs.unlinkSync(path.join(pathToElectron, v8ContextFileName))
+    console.log('Removing v8 snapshot from', pathToV8ContextFileName)
+    fs.unlinkSync(pathToV8ContextFileName)
     break
   }
   case 'win32':
@@ -27,10 +26,10 @@ switch (process.platform) {
       'electron',
       'dist'
     )
+    const pathToV8ContextFileName = path.join(pathToElectron, v8ContextFileName);
 
-    console.log('Removing v8 snapshot from', path.join(pathToElectron, snapshotFileName))
-    fs.unlinkSync(path.join(pathToElectron, snapshotFileName))
-    fs.unlinkSync(path.join(pathToElectron, v8ContextFileName))
+    console.log('Removing v8 snapshot from', pathToV8ContextFileName)
+    fs.unlinkSync(pathToV8ContextFileName)
     break
   }
 }

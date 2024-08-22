@@ -2,9 +2,7 @@ const { flipFuses, FuseVersion, FuseV1Options } = require('@electron/fuses')
 const path = require('path')
 const fs = require('fs')
 
-const snapshotFileName = 'snapshot_blob.bin'
 const v8ContextFileName = getV8ContextFileName()
-const pathToSnapshotBlob = path.resolve(__dirname, '..', snapshotFileName)
 const pathToV8ContextBlob = path.resolve(__dirname, '..', v8ContextFileName)
 
 switch (process.platform) {
@@ -14,10 +12,10 @@ switch (process.platform) {
       '..',
       'node_modules/electron/dist/Electron.app/Contents/Frameworks/Electron Framework.framework/Versions/A/Resources'
     )
+    const pathToBrowserV8ContextBlob = path.join(pathToElectron, 'browser_v8_context_snapshot.bin')
 
-    console.log('Copying v8 snapshots from', pathToSnapshotBlob, 'to', pathToElectron)
-    fs.copyFileSync(pathToSnapshotBlob, path.join(pathToElectron, snapshotFileName))
-    fs.copyFileSync(pathToV8ContextBlob, path.join(pathToElectron, 'browser_v8_context_snapshot.bin'))
+    console.log('Copying v8 snapshot from', pathToV8ContextBlob, 'to', pathToBrowserV8ContextBlob)
+    fs.copyFileSync(pathToV8ContextBlob, pathToBrowserV8ContextBlob)
     break
   }
   case 'win32':
@@ -29,10 +27,10 @@ switch (process.platform) {
       'electron',
       'dist'
     )
+    const pathToBrowserV8ContextBlob = path.join(pathToElectron, 'browser_v8_context_snapshot.bin')
 
-    console.log('Copying v8 snapshots from', pathToSnapshotBlob, 'to', pathToElectron)
-    fs.copyFileSync(pathToSnapshotBlob, path.join(pathToElectron, snapshotFileName))
-    fs.copyFileSync(pathToV8ContextBlob, path.join(pathToElectron, 'browser_v8_context_snapshot.bin'))
+    console.log('Copying v8 snapshot from', pathToV8ContextBlob, 'to', pathToBrowserV8ContextBlob)
+    fs.copyFileSync(pathToV8ContextBlob, pathToBrowserV8ContextBlob)
     break
   }
 }
