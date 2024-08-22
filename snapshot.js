@@ -38,14 +38,7 @@ require('@sentry/node');
 require('shelljs');
 require('sudo-prompt');
 require('serialised-error');
-
-// Snapshottable dependencies of '@postman/app-updater'
-{
-  require('@postman/app-updater/lib/WindowsUpdater');
-  require('@postman/app-updater/lib/DarwinUpdater');
-  require('@postman/app-updater/lib/LinuxUpdater');
-  require('@postman/app-updater/lib/autoUpdater/LinuxAutoUpdater');
-}
+require('@postman/app-updater');
 
 // TODO(RaisinTen): Can we add require('ws');?
 
