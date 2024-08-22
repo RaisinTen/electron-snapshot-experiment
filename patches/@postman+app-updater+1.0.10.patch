@@ -1,0 +1,22 @@
+diff --git a/node_modules/@postman/app-updater/lib/AbstractUpdater.js b/node_modules/@postman/app-updater/lib/AbstractUpdater.js
+index 67b9727..5f03799 100644
+--- a/node_modules/@postman/app-updater/lib/AbstractUpdater.js
++++ b/node_modules/@postman/app-updater/lib/AbstractUpdater.js
+@@ -7,7 +7,7 @@ const EventEmitter = require('events'),
+  * @extends EventEmitter
+  * @description This holds the common functionalities for orchestrating the auto-updater.
+  */
+-class AbstractUpdater extends EventEmitter {
++class AbstractUpdater {
+ 
+     /**
+      * @method constructor
+@@ -16,7 +16,7 @@ class AbstractUpdater extends EventEmitter {
+      * @param {Object} updaterOptions.autoUpdater
+      */
+     constructor (updaterOptions) {
+-        super();
++        EventEmitter.call(this);
+         this.assignUpdaterOptions(updaterOptions);
+         this.attachAutoUpdaterListeners();
+ 

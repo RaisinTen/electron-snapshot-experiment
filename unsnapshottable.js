@@ -98,3 +98,11 @@ const Agent = require('agent-base');
   // special case: since console is built-in and app-level code won't require() it, do that here
   require('console');
 }
+
+// Move the code for making AbstractUpdater from
+// '@postman/app-updater/lib/AbstractUpdater' inherit from EventEmitter here
+// because EventEmitter is not a part of the V8 snapshot.
+{
+  const AbstractUpdater = require('@postman/app-updater/lib/AbstractUpdater');
+  util.inherits(AbstractUpdater, EventEmitter);
+}

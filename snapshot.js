@@ -39,7 +39,13 @@ require('shelljs');
 require('sudo-prompt');
 require('serialised-error');
 
-// TODO(RaisinTen): Can we add require('@postman/app-updater');?
+// Snapshottable dependencies of '@postman/app-updater'
+{
+  // Snapshottable dependencies of '@postman/app-updater/lib/WindowsUpdater'
+  {
+    require('@postman/app-updater/lib/AbstractUpdater');
+  }
+}
 
 // TODO(RaisinTen): Can we add require('ws');?
 
