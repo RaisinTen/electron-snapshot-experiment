@@ -45,6 +45,10 @@ require('@postman/app-updater');
   // Snapshottable dependencies of 'ws/lib/websocket'
   {
     require('ws/lib/permessage-deflate');
+    // Snapshottable dependencies of 'ws/lib/receiver'
+    {
+      require('ws/lib/validation');
+    }
   }
 }
 

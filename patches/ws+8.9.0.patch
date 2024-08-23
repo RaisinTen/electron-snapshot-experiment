@@ -148,6 +148,27 @@ index c848853..5d3395b 100644
      } else if (typeof code !== 'number' || !isValidStatusCode(code)) {
        throw new TypeError('First argument must be a valid error code number');
      } else if (data === undefined || !data.length) {
+diff --git a/node_modules/ws/lib/validation.js b/node_modules/ws/lib/validation.js
+index 44fc202..a81e1f1 100644
+--- a/node_modules/ws/lib/validation.js
++++ b/node_modules/ws/lib/validation.js
+@@ -110,16 +110,3 @@ module.exports = {
+   isValidUTF8: _isValidUTF8,
+   tokenChars
+ };
+-
+-/* istanbul ignore else  */
+-if (!process.env.WS_NO_UTF_8_VALIDATE) {
+-  try {
+-    const isValidUTF8 = require('utf-8-validate');
+-
+-    module.exports.isValidUTF8 = function (buf) {
+-      return buf.length < 150 ? _isValidUTF8(buf) : isValidUTF8(buf);
+-    };
+-  } catch (e) {
+-    // Continue regardless of the error.
+-  }
+-}
 diff --git a/node_modules/ws/lib/websocket.js b/node_modules/ws/lib/websocket.js
 index 4391c73..c9b539b 100644
 --- a/node_modules/ws/lib/websocket.js
