@@ -47,6 +47,7 @@ require('@postman/app-updater');
     require('ws/lib/permessage-deflate');
     require('ws/lib/receiver');
     require('ws/lib/sender');
+    require('ws/lib/event-target');
   }
 }
 
