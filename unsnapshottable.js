@@ -114,3 +114,11 @@ const Agent = require('agent-base');
   const LinuxAutoUpdater = require('@postman/app-updater/lib/autoUpdater/LinuxAutoUpdater');
   util.inherits(LinuxAutoUpdater, EventEmitter);
 }
+
+// Move the code for making Receiver from 'ws/lib/receiver' inherit from
+// stream.Writable here because Writable is not a part of the V8 snapshot.
+{
+  const { Writable } = require('node:stream');
+  const Receiver = require('./node_modules/ws/lib/receiver');
+  util.inherits(Receiver, Writable);
+}

@@ -96,7 +96,7 @@ index 94603c9..99b4e10 100644
      this._inflate.flush(() => {
        const err = this._inflate[kError];
 diff --git a/node_modules/ws/lib/receiver.js b/node_modules/ws/lib/receiver.js
-index 2d29d62..b231026 100644
+index 2d29d62..8f62570 100644
 --- a/node_modules/ws/lib/receiver.js
 +++ b/node_modules/ws/lib/receiver.js
 @@ -5,7 +5,7 @@ const { Writable } = require('stream');
@@ -108,6 +108,24 @@ index 2d29d62..b231026 100644
    kStatusCode,
    kWebSocket
  } = require('./constants');
+@@ -24,7 +24,7 @@ const INFLATING = 5;
+  *
+  * @extends Writable
+  */
+-class Receiver extends Writable {
++class Receiver {
+   /**
+    * Creates a Receiver instance.
+    *
+@@ -39,7 +39,7 @@ class Receiver extends Writable {
+    *     not to skip UTF-8 validation for text and close messages
+    */
+   constructor(options = {}) {
+-    super();
++    Writable.call(this);
+ 
+     this._binaryType = options.binaryType || BINARY_TYPES[0];
+     this._extensions = options.extensions || {};
 @@ -408,7 +408,7 @@ class Receiver extends Writable {
     * @private
     */
