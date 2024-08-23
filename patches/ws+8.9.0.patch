@@ -206,7 +206,7 @@ index 44fc202..a81e1f1 100644
 -  }
 -}
 diff --git a/node_modules/ws/lib/websocket.js b/node_modules/ws/lib/websocket.js
-index 4391c73..c9b539b 100644
+index 4391c73..97facb6 100644
 --- a/node_modules/ws/lib/websocket.js
 +++ b/node_modules/ws/lib/websocket.js
 @@ -16,7 +16,7 @@ const Receiver = require('./receiver');
@@ -218,7 +218,23 @@ index 4391c73..c9b539b 100644
    GUID,
    kForOnEventAttribute,
    kListener,
-@@ -56,7 +56,7 @@ class WebSocket extends EventEmitter {
+@@ -41,7 +41,7 @@ const subprotocolRegex = /^[!#$%&'*+\-.0-9A-Z^_`|a-z~]+$/;
+  *
+  * @extends EventEmitter
+  */
+-class WebSocket extends EventEmitter {
++class WebSocket {
+   /**
+    * Create a new `WebSocket`.
+    *
+@@ -50,13 +50,13 @@ class WebSocket extends EventEmitter {
+    * @param {Object} [options] Connection options
+    */
+   constructor(address, protocols, options) {
+-    super();
++    EventEmitter.call(this);
+ 
+     this._binaryType = BINARY_TYPES[0];
      this._closeCode = 1006;
      this._closeFrameReceived = false;
      this._closeFrameSent = false;

@@ -42,13 +42,7 @@ require('@postman/app-updater');
 
 // Snapshottable dependencies of 'ws'
 {
-  // Snapshottable dependencies of 'ws/lib/websocket'
-  {
-    require('ws/lib/permessage-deflate');
-    require('ws/lib/receiver');
-    require('ws/lib/sender');
-    require('ws/lib/event-target');
-  }
+  require('ws/lib/websocket');
 }
 
 require('@raisinten/aes-crypto-js');

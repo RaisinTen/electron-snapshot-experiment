@@ -132,3 +132,10 @@ function extendClass(target, base) {
   const Receiver = require('./node_modules/ws/lib/receiver');
   extendClass(Receiver, Writable);
 }
+
+// Move the code for making WebSocket from 'ws/lib/websocket' inherit from
+// EventEmitter here because EventEmitter is not a part of the V8 snapshot.
+{
+  const WebSocket = require('./node_modules/ws/lib/websocket');
+  extendClass(WebSocket, EventEmitter);
+}
