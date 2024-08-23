@@ -154,3 +154,13 @@ function extendClass(target, base) {
   const IPCModule = require('node-ipc');
   require.cache[require.resolve('node-ipc')] = new IPCModule();
 }
+
+// Move the code for assigning nextTick, setImmediate and globalScope to the
+// 'node-forge/lib/util' module here because those variables are not available
+// in the default context of the V8 snapshot.
+{
+  const nodeForgeUtil = require('node-forge/lib/util');
+  nodeForgeUtil.nextTick = process.nextTick;
+  nodeForgeUtil.setImmediate = setImmediate;
+  nodeForgeUtil.globalScope = global;
+}
