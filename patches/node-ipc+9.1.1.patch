@@ -44,3 +44,16 @@ index 4fd99be..f56c072 100644
          super();
          Object.assign(
              this,
+diff --git a/node_modules/node-ipc/node-ipc.js b/node_modules/node-ipc/node-ipc.js
+index 1c63360..bf84820 100644
+--- a/node_modules/node-ipc/node-ipc.js
++++ b/node_modules/node-ipc/node-ipc.js
+@@ -18,4 +18,7 @@ class IPCModule extends IPC{
+     }
+ }
+ 
+-module.exports=new IPCModule;
++// This returns the IPCModule class instead of the IPCModule instance, so that
++// this can be snapshotted. In unsnapshottable.js, this module gets
++// monkey-patched to return an IPCModule instance instead of the class.
++module.exports=IPCModule;

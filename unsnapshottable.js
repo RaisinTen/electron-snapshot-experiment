@@ -146,3 +146,11 @@ function extendClass(target, base) {
   const WebSocketServer = require('./node_modules/ws/lib/websocket-server');
   extendClass(WebSocketServer, EventEmitter);
 }
+
+// Monkey-patch the 'node-ipc' module to export an IPCModule instance instead of
+// the IPCModule class because that is what the original module does. It has
+// been patched to return the class, so that it can be snapshotted.
+{
+  const IPCModule = require('node-ipc');
+  require.cache[require.resolve('node-ipc')] = new IPCModule();
+}

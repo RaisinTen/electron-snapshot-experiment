@@ -41,13 +41,7 @@ require('serialised-error');
 require('@postman/app-updater');
 require('ws');
 require('@raisinten/aes-crypto-js');
-
-// Snapshottable dependencies of 'node-ipc'
-{
-  require('node-ipc/entities/Defaults');
-  require('node-ipc/dao/client');
-  require('node-ipc/dao/socketServer');
-}
+require('node-ipc');
 
 // TODO(RaisinTen): Can we add require('@postman/app-logger');?
 
