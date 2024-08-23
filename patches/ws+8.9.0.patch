@@ -64,6 +64,37 @@ index d691b30..3b75fe7 100644
    GUID: '258EAFA5-E914-47DA-95CA-C5AB0DC85B11',
    kForOnEventAttribute: Symbol('kIsForOnEventAttribute'),
    kListener: Symbol('kListener'),
+diff --git a/node_modules/ws/lib/permessage-deflate.js b/node_modules/ws/lib/permessage-deflate.js
+index 94603c9..99b4e10 100644
+--- a/node_modules/ws/lib/permessage-deflate.js
++++ b/node_modules/ws/lib/permessage-deflate.js
+@@ -6,7 +6,13 @@ const bufferUtil = require('./buffer-util');
+ const Limiter = require('./limiter');
+ const { kStatusCode } = require('./constants');
+ 
+-const TRAILER = Buffer.from([0x00, 0x00, 0xff, 0xff]);
++// Buffer is not a part of the V8 snapshot, so instead of calling Buffer.alloc()
++// directly, use a function that calls that instead.
++let TRAILER;
++function initTrailer() {
++  if (TRAILER) return;
++  TRAILER = Buffer.from([0x00, 0x00, 0xff, 0xff]);
++}
+ const kPerMessageDeflate = Symbol('permessage-deflate');
+ const kTotalLength = Symbol('total-length');
+ const kCallback = Symbol('callback');
+@@ -359,7 +365,10 @@ class PerMessageDeflate {
+     this._inflate[kCallback] = callback;
+ 
+     this._inflate.write(data);
+-    if (fin) this._inflate.write(TRAILER);
++    if (fin) {
++      initTrailer();
++      this._inflate.write(TRAILER);
++    }
+ 
+     this._inflate.flush(() => {
+       const err = this._inflate[kError];
 diff --git a/node_modules/ws/lib/receiver.js b/node_modules/ws/lib/receiver.js
 index 2d29d62..b231026 100644
 --- a/node_modules/ws/lib/receiver.js
