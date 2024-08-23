@@ -1,0 +1,168 @@
+diff --git a/node_modules/ws/lib/buffer-util.js b/node_modules/ws/lib/buffer-util.js
+index df75955..eb45181 100644
+--- a/node_modules/ws/lib/buffer-util.js
++++ b/node_modules/ws/lib/buffer-util.js
+@@ -1,6 +1,6 @@
+ 'use strict';
+ 
+-const { EMPTY_BUFFER } = require('./constants');
++const { GET_EMPTY_BUFFER } = require('./constants');
+ 
+ /**
+  * Merges an array of buffers into a new buffer.
+@@ -11,7 +11,7 @@ const { EMPTY_BUFFER } = require('./constants');
+  * @public
+  */
+ function concat(list, totalLength) {
+-  if (list.length === 0) return EMPTY_BUFFER;
++  if (list.length === 0) return GET_EMPTY_BUFFER();
+   if (list.length === 1) return list[0];
+ 
+   const target = Buffer.allocUnsafe(totalLength);
+@@ -106,22 +106,3 @@ module.exports = {
+   toBuffer,
+   unmask: _unmask
+ };
+-
+-/* istanbul ignore else  */
+-if (!process.env.WS_NO_BUFFER_UTIL) {
+-  try {
+-    const bufferUtil = require('bufferutil');
+-
+-    module.exports.mask = function (source, mask, output, offset, length) {
+-      if (length < 48) _mask(source, mask, output, offset, length);
+-      else bufferUtil.mask(source, mask, output, offset, length);
+-    };
+-
+-    module.exports.unmask = function (buffer, mask) {
+-      if (buffer.length < 32) _unmask(buffer, mask);
+-      else bufferUtil.unmask(buffer, mask);
+-    };
+-  } catch (e) {
+-    // Continue regardless of the error.
+-  }
+-}
+diff --git a/node_modules/ws/lib/constants.js b/node_modules/ws/lib/constants.js
+index d691b30..3b75fe7 100644
+--- a/node_modules/ws/lib/constants.js
++++ b/node_modules/ws/lib/constants.js
+@@ -1,8 +1,16 @@
+ 'use strict';
+ 
++// Buffer is not a part of the V8 snapshot, so instead of calling Buffer.alloc()
++// directly, export a function that calls that instead.
++let emptyBuffer;
++function GET_EMPTY_BUFFER() {
++  if (!emptyBuffer) emptyBuffer = Buffer.alloc(0);
++  return emptyBuffer;
++}
++
+ module.exports = {
+   BINARY_TYPES: ['nodebuffer', 'arraybuffer', 'fragments'],
+-  EMPTY_BUFFER: Buffer.alloc(0),
++  GET_EMPTY_BUFFER,
+   GUID: '258EAFA5-E914-47DA-95CA-C5AB0DC85B11',
+   kForOnEventAttribute: Symbol('kIsForOnEventAttribute'),
+   kListener: Symbol('kListener'),
+diff --git a/node_modules/ws/lib/receiver.js b/node_modules/ws/lib/receiver.js
+index 2d29d62..b231026 100644
+--- a/node_modules/ws/lib/receiver.js
++++ b/node_modules/ws/lib/receiver.js
+@@ -5,7 +5,7 @@ const { Writable } = require('stream');
+ const PerMessageDeflate = require('./permessage-deflate');
+ const {
+   BINARY_TYPES,
+-  EMPTY_BUFFER,
++  GET_EMPTY_BUFFER,
+   kStatusCode,
+   kWebSocket
+ } = require('./constants');
+@@ -408,7 +408,7 @@ class Receiver extends Writable {
+    * @private
+    */
+   getData(cb) {
+-    let data = EMPTY_BUFFER;
++    let data = GET_EMPTY_BUFFER();
+ 
+     if (this._payloadLength) {
+       if (this._bufferedBytes < this._payloadLength) {
+@@ -544,7 +544,7 @@ class Receiver extends Writable {
+       this._loop = false;
+ 
+       if (data.length === 0) {
+-        this.emit('conclude', 1005, EMPTY_BUFFER);
++        this.emit('conclude', 1005, GET_EMPTY_BUFFER());
+         this.end();
+       } else if (data.length === 1) {
+         return error(
+diff --git a/node_modules/ws/lib/sender.js b/node_modules/ws/lib/sender.js
+index c848853..5d3395b 100644
+--- a/node_modules/ws/lib/sender.js
++++ b/node_modules/ws/lib/sender.js
+@@ -7,7 +7,7 @@ const tls = require('tls');
+ const { randomFillSync } = require('crypto');
+ 
+ const PerMessageDeflate = require('./permessage-deflate');
+-const { EMPTY_BUFFER } = require('./constants');
++const { GET_EMPTY_BUFFER } = require('./constants');
+ const { isValidStatusCode } = require('./validation');
+ const { mask: applyMask, toBuffer } = require('./buffer-util');
+ 
+@@ -157,7 +157,7 @@ class Sender {
+     let buf;
+ 
+     if (code === undefined) {
+-      buf = EMPTY_BUFFER;
++      buf = GET_EMPTY_BUFFER();
+     } else if (typeof code !== 'number' || !isValidStatusCode(code)) {
+       throw new TypeError('First argument must be a valid error code number');
+     } else if (data === undefined || !data.length) {
+diff --git a/node_modules/ws/lib/websocket.js b/node_modules/ws/lib/websocket.js
+index 4391c73..c9b539b 100644
+--- a/node_modules/ws/lib/websocket.js
++++ b/node_modules/ws/lib/websocket.js
+@@ -16,7 +16,7 @@ const Receiver = require('./receiver');
+ const Sender = require('./sender');
+ const {
+   BINARY_TYPES,
+-  EMPTY_BUFFER,
++  GET_EMPTY_BUFFER,
+   GUID,
+   kForOnEventAttribute,
+   kListener,
+@@ -56,7 +56,7 @@ class WebSocket extends EventEmitter {
+     this._closeCode = 1006;
+     this._closeFrameReceived = false;
+     this._closeFrameSent = false;
+-    this._closeMessage = EMPTY_BUFFER;
++    this._closeMessage = GET_EMPTY_BUFFER();
+     this._closeTimer = null;
+     this._extensions = {};
+     this._paused = false;
+@@ -369,7 +369,7 @@ class WebSocket extends EventEmitter {
+     }
+ 
+     if (mask === undefined) mask = !this._isServer;
+-    this._sender.ping(data || EMPTY_BUFFER, mask, cb);
++    this._sender.ping(data || GET_EMPTY_BUFFER(), mask, cb);
+   }
+ 
+   /**
+@@ -401,7 +401,7 @@ class WebSocket extends EventEmitter {
+     }
+ 
+     if (mask === undefined) mask = !this._isServer;
+-    this._sender.pong(data || EMPTY_BUFFER, mask, cb);
++    this._sender.pong(data || GET_EMPTY_BUFFER(), mask, cb);
+   }
+ 
+   /**
+@@ -465,7 +465,7 @@ class WebSocket extends EventEmitter {
+       opts.compress = false;
+     }
+ 
+-    this._sender.send(data || EMPTY_BUFFER, opts, cb);
++    this._sender.send(data || GET_EMPTY_BUFFER(), opts, cb);
+   }
+ 
+   /**

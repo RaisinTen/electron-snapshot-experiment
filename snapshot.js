@@ -40,7 +40,16 @@ require('sudo-prompt');
 require('serialised-error');
 require('@postman/app-updater');
 
-// TODO(RaisinTen): Can we add require('ws');?
+// Snapshottable dependencies of 'ws'
+{
+  // Snapshottable dependencies of 'ws/lib/websocket'
+  {
+    // Snapshottable dependencies of 'ws/lib/permessage-deflate'
+    {
+      require('ws/lib/buffer-util');
+    }
+  }
+}
 
 require('@raisinten/aes-crypto-js');
 
