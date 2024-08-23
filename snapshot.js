@@ -43,6 +43,7 @@ require('@postman/app-updater');
 // Snapshottable dependencies of 'ws'
 {
   require('ws/lib/websocket');
+  require('ws/lib/stream');
 }
 
 require('@raisinten/aes-crypto-js');
