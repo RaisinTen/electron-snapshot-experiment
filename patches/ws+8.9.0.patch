@@ -145,10 +145,10 @@ index 2d29d62..8f62570 100644
        } else if (data.length === 1) {
          return error(
 diff --git a/node_modules/ws/lib/sender.js b/node_modules/ws/lib/sender.js
-index c848853..5d3395b 100644
+index c848853..811ee03 100644
 --- a/node_modules/ws/lib/sender.js
 +++ b/node_modules/ws/lib/sender.js
-@@ -7,7 +7,7 @@ const tls = require('tls');
+@@ -7,12 +7,16 @@ const tls = require('tls');
  const { randomFillSync } = require('crypto');
  
  const PerMessageDeflate = require('./permessage-deflate');
@@ -157,7 +157,25 @@ index c848853..5d3395b 100644
  const { isValidStatusCode } = require('./validation');
  const { mask: applyMask, toBuffer } = require('./buffer-util');
  
-@@ -157,7 +157,7 @@ class Sender {
+ const kByteLength = Symbol('kByteLength');
+-const maskBuffer = Buffer.alloc(4);
++let maskBuffer;
++function initMaskBuffer() {
++  if (maskBuffer) return;
++  maskBuffer = Buffer.alloc(4);
++}
+ 
+ /**
+  * HyBi Sender implementation.
+@@ -72,6 +76,7 @@ class Sender {
+     let skipMasking = false;
+ 
+     if (options.mask) {
++      initMaskBuffer();
+       mask = options.maskBuffer || maskBuffer;
+ 
+       if (options.generateMask) {
+@@ -157,7 +162,7 @@ class Sender {
      let buf;
  
      if (code === undefined) {
