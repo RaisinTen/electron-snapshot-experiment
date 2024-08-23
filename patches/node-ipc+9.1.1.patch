@@ -21,3 +21,26 @@ index 41ce504..c28f5a8 100644
          super();
          Object.assign(
              this,
+diff --git a/node_modules/node-ipc/dao/socketServer.js b/node_modules/node-ipc/dao/socketServer.js
+index 4fd99be..f56c072 100644
+--- a/node_modules/node-ipc/dao/socketServer.js
++++ b/node_modules/node-ipc/dao/socketServer.js
+@@ -7,15 +7,13 @@ const net = require('net'),
+     EventParser = require('../entities/EventParser.js'),
+     Message = require('js-message');
+ 
+-let Events = require('event-pubsub/es5');
+-if(process.version[1]>4){
+-    Events = require('event-pubsub');
+-}
++const Events = require('event-pubsub/es6');
+ 
+-let eventParser = new EventParser();
++let eventParser;
+ 
+ class Server extends Events{
+     constructor(path,config,log,port){
++        if (!eventParser) eventParser = new EventParser();
+         super();
+         Object.assign(
+             this,

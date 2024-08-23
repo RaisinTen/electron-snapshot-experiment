@@ -46,6 +46,7 @@ require('@raisinten/aes-crypto-js');
 {
   require('node-ipc/entities/Defaults');
   require('node-ipc/dao/client');
+  require('node-ipc/dao/socketServer');
 }
 
 // TODO(RaisinTen): Can we add require('@postman/app-logger');?
