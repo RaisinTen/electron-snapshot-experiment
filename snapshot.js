@@ -39,14 +39,7 @@ require('shelljs');
 require('sudo-prompt');
 require('serialised-error');
 require('@postman/app-updater');
-
-// Snapshottable dependencies of 'ws'
-{
-  require('ws/lib/websocket');
-  require('ws/lib/stream');
-  require('ws/lib/websocket-server');
-}
-
+require('ws');
 require('@raisinten/aes-crypto-js');
 
 // TODO(RaisinTen): Can we add require('node-ipc');?
