@@ -2,6 +2,16 @@ const util = require('node:util');
 const { EventEmitter } = require('node:events');
 const Agent = require('agent-base');
 
+// Dynamically make the `target` class extend from `base`. Differences with
+// util.inherits():
+// - Unlike extendClass, util.inherits() defines the `super_` property
+// - Unlike extendClass, util.inherits() does not allow inheriting static
+//   properties
+function extendClass(target, base) {
+  Object.setPrototypeOf(target, base);
+  Object.setPrototypeOf(target.prototype, base.prototype);
+}
+
 // Make require('glob').Glob inherit from EventEmitter. This needs to be done
 // here because EventEmitter is not a part of the default V8 context which is
 // used to generate the V8 snapshot.
@@ -104,7 +114,7 @@ const Agent = require('agent-base');
 // because EventEmitter is not a part of the V8 snapshot.
 {
   const AbstractUpdater = require('@postman/app-updater/lib/AbstractUpdater');
-  util.inherits(AbstractUpdater, EventEmitter);
+  extendClass(AbstractUpdater, EventEmitter);
 }
 
 // Move the code for making LinuxAutoUpdater from
@@ -112,7 +122,7 @@ const Agent = require('agent-base');
 // EventEmitter here because EventEmitter is not a part of the V8 snapshot.
 {
   const LinuxAutoUpdater = require('@postman/app-updater/lib/autoUpdater/LinuxAutoUpdater');
-  util.inherits(LinuxAutoUpdater, EventEmitter);
+  extendClass(LinuxAutoUpdater, EventEmitter);
 }
 
 // Move the code for making Receiver from 'ws/lib/receiver' inherit from
@@ -120,5 +130,5 @@ const Agent = require('agent-base');
 {
   const { Writable } = require('node:stream');
   const Receiver = require('./node_modules/ws/lib/receiver');
-  util.inherits(Receiver, Writable);
+  extendClass(Receiver, Writable);
 }
