@@ -44,6 +44,7 @@ require('@postman/app-updater');
 {
   require('ws/lib/websocket');
   require('ws/lib/stream');
+  require('ws/lib/websocket-server');
 }
 
 require('@raisinten/aes-crypto-js');
