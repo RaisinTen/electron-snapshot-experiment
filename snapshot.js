@@ -56,6 +56,15 @@ require('node-ipc');
       require('node-forge/lib/hmac');
       require('node-forge/lib/md5');
       require('node-forge/lib/pem');
+
+      // Snapshottable dependencies of 'node-forge/lib/pki'
+      {
+        // Snapshottable dependencies of 'node-forge/lib/pbe'
+        {
+          require('node-forge/lib/des');
+          require('node-forge/lib/pbkdf2');
+        }
+      }
     }
   }
 }

@@ -1,3 +1,19 @@
+diff --git a/node_modules/node-forge/lib/pbkdf2.js b/node_modules/node-forge/lib/pbkdf2.js
+index 714560e..33e5b56 100644
+--- a/node_modules/node-forge/lib/pbkdf2.js
++++ b/node_modules/node-forge/lib/pbkdf2.js
+@@ -14,10 +14,7 @@ require('./util');
+ 
+ var pkcs5 = forge.pkcs5 = forge.pkcs5 || {};
+ 
+-var crypto;
+-if(forge.util.isNodejs && !forge.options.usePureJavaScript) {
+-  crypto = require('crypto');
+-}
++var crypto = require('crypto');
+ 
+ /**
+  * Derives a key from a password.
 diff --git a/node_modules/node-forge/lib/util.js b/node_modules/node-forge/lib/util.js
 index 98dfd34..bd04250 100644
 --- a/node_modules/node-forge/lib/util.js
