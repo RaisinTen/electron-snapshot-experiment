@@ -31,6 +31,98 @@ index c2f5f05..32afb04 100644
  
  /* PRNG API */
  var prng = module.exports = forge.prng = forge.prng || {};
+diff --git a/node_modules/node-forge/lib/random.js b/node_modules/node-forge/lib/random.js
+index d4e4bea..a937374 100644
+--- a/node_modules/node-forge/lib/random.js
++++ b/node_modules/node-forge/lib/random.js
+@@ -109,82 +109,11 @@ function spawnPrng() {
+   return ctx;
+ }
+ 
+-// create default prng context
+-var _ctx = spawnPrng();
+-
+-// add other sources of entropy only if window.crypto.getRandomValues is not
+-// available -- otherwise this source will be automatically used by the prng
+-var getRandomValues = null;
+-var globalScope = forge.util.globalScope;
+-var _crypto = globalScope.crypto || globalScope.msCrypto;
+-if(_crypto && _crypto.getRandomValues) {
+-  getRandomValues = function(arr) {
+-    return _crypto.getRandomValues(arr);
+-  };
+-}
+-
+-if(forge.options.usePureJavaScript ||
+-  (!forge.util.isNodejs && !getRandomValues)) {
+-  // if this is a web worker, do not use weak entropy, instead register to
+-  // receive strong entropy asynchronously from the main thread
+-  if(typeof window === 'undefined' || window.document === undefined) {
+-    // FIXME:
+-  }
+-
+-  // get load time entropy
+-  _ctx.collectInt(+new Date(), 32);
+-
+-  // add some entropy from navigator object
+-  if(typeof(navigator) !== 'undefined') {
+-    var _navBytes = '';
+-    for(var key in navigator) {
+-      try {
+-        if(typeof(navigator[key]) == 'string') {
+-          _navBytes += navigator[key];
+-        }
+-      } catch(e) {
+-        /* Some navigator keys might not be accessible, e.g. the geolocation
+-          attribute throws an exception if touched in Mozilla chrome://
+-          context.
+-
+-          Silently ignore this and just don't use this as a source of
+-          entropy. */
+-      }
+-    }
+-    _ctx.collect(_navBytes);
+-    _navBytes = null;
+-  }
+-
+-  // add mouse and keyboard collectors if jquery is available
+-  if(jQuery) {
+-    // set up mouse entropy capture
+-    jQuery().mousemove(function(e) {
+-      // add mouse coords
+-      _ctx.collectInt(e.clientX, 16);
+-      _ctx.collectInt(e.clientY, 16);
+-    });
+-
+-    // set up keyboard entropy capture
+-    jQuery().keypress(function(e) {
+-      _ctx.collectInt(e.charCode, 8);
+-    });
+-  }
+-}
+-
+-/* Random API */
+-if(!forge.random) {
+-  forge.random = _ctx;
+-} else {
+-  // extend forge.random with _ctx
+-  for(var key in _ctx) {
+-    forge.random[key] = _ctx[key];
+-  }
+-}
+-
+-// expose spawn PRNG
+-forge.random.createInstance = spawnPrng;
+-
+-module.exports = forge.random;
++// The default context is created and monkey-patched in unsnapshottable.js, so
++// that this can be snapshotted without requiring the use of the Node.js crypto
++// module.
++module.exports.forge = forge;
++module.exports.spawnPrng = spawnPrng;
+ 
+ })(typeof(jQuery) !== 'undefined' ? jQuery : null);
+ 
 diff --git a/node_modules/node-forge/lib/util.js b/node_modules/node-forge/lib/util.js
 index 98dfd34..bd04250 100644
 --- a/node_modules/node-forge/lib/util.js

@@ -164,3 +164,14 @@ function extendClass(target, base) {
   nodeForgeUtil.setImmediate = setImmediate;
   nodeForgeUtil.globalScope = global;
 }
+
+// Move the code for creating the default PRNG context out of
+// 'node-forge/lib/random.js' because that requires the usage of the 'crypto'
+// module which is not available in the default context of the V8 snapshot.
+{
+  const { forge, spawnPrng } = require('node-forge/lib/random');
+  forge.random = spawnPrng();
+  // expose spawn PRNG
+  forge.random.createInstance = spawnPrng;
+  require.cache[require.resolve('node-forge/lib/random')] = forge.random;
+}
