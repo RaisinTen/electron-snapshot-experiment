@@ -14,6 +14,23 @@ index 714560e..33e5b56 100644
  
  /**
   * Derives a key from a password.
+diff --git a/node_modules/node-forge/lib/prng.js b/node_modules/node-forge/lib/prng.js
+index c2f5f05..32afb04 100644
+--- a/node_modules/node-forge/lib/prng.js
++++ b/node_modules/node-forge/lib/prng.js
+@@ -12,11 +12,7 @@
+ var forge = require('./forge');
+ require('./util');
+ 
+-var _crypto = null;
+-if(forge.util.isNodejs && !forge.options.usePureJavaScript &&
+-  !process.versions['node-webkit']) {
+-  _crypto = require('crypto');
+-}
++var _crypto = require('crypto');
+ 
+ /* PRNG API */
+ var prng = module.exports = forge.prng = forge.prng || {};
 diff --git a/node_modules/node-forge/lib/util.js b/node_modules/node-forge/lib/util.js
 index 98dfd34..bd04250 100644
 --- a/node_modules/node-forge/lib/util.js

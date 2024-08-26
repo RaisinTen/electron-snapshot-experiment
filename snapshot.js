@@ -63,6 +63,11 @@ require('node-ipc');
         {
           require('node-forge/lib/des');
           require('node-forge/lib/pbkdf2');
+
+          // Snapshottable dependencies of 'node-forge/lib/random'
+          {
+            require('node-forge/lib/prng');
+          }
         }
       }
     }
