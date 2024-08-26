@@ -64,6 +64,8 @@ require('node-ipc');
           require('node-forge/lib/des');
           require('node-forge/lib/pbkdf2');
           require('node-forge/lib/random');
+          require('node-forge/lib/rc2');
+          require('node-forge/lib/rsa');
         }
       }
     }

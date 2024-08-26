@@ -123,6 +123,19 @@ index d4e4bea..a937374 100644
  
  })(typeof(jQuery) !== 'undefined' ? jQuery : null);
  
+diff --git a/node_modules/node-forge/lib/rsa.js b/node_modules/node-forge/lib/rsa.js
+index 7c67917..ddae716 100644
+--- a/node_modules/node-forge/lib/rsa.js
++++ b/node_modules/node-forge/lib/rsa.js
+@@ -74,7 +74,7 @@ if(typeof BigInteger === 'undefined') {
+   var BigInteger = forge.jsbn.BigInteger;
+ }
+ 
+-var _crypto = forge.util.isNodejs ? require('crypto') : null;
++var _crypto = require('crypto');
+ 
+ // shortcut for asn.1 API
+ var asn1 = forge.asn1;
 diff --git a/node_modules/node-forge/lib/util.js b/node_modules/node-forge/lib/util.js
 index 98dfd34..bd04250 100644
 --- a/node_modules/node-forge/lib/util.js
