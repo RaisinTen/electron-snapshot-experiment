@@ -59,14 +59,7 @@ require('node-ipc');
 
       // Snapshottable dependencies of 'node-forge/lib/pki'
       {
-        // Snapshottable dependencies of 'node-forge/lib/pbe'
-        {
-          require('node-forge/lib/des');
-          require('node-forge/lib/pbkdf2');
-          require('node-forge/lib/random');
-          require('node-forge/lib/rc2');
-          require('node-forge/lib/rsa');
-        }
+        require('node-forge/lib/pbe');
       }
     }
   }
