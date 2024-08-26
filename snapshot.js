@@ -48,6 +48,16 @@ require('node-ipc');
 // Snapshottable dependencies of 'node-forge'
 {
   require('node-forge/lib/aes');
+  // Snapshottable dependencies of 'node-forge/lib/aesChipherSuites'
+  {
+    // Snapshottable dependencies of 'node-forge/lib/tls'
+    {
+      require('node-forge/lib/asn1');
+      require('node-forge/lib/hmac');
+      require('node-forge/lib/md5');
+      require('node-forge/lib/pem');
+    }
+  }
 }
 
 // TODO(RaisinTen): Can we add require('@postman/pem');?
