@@ -50,6 +50,7 @@ require('node-ipc');
   require('node-forge/lib/aes');
   require('node-forge/lib/aesCipherSuites');
   require('node-forge/lib/debug');
+  require('node-forge/lib/ed25519');
 }
 
 // TODO(RaisinTen): Can we add require('@postman/pem');?

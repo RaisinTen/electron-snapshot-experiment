@@ -1,3 +1,338 @@
+diff --git a/node_modules/node-forge/lib/ed25519.js b/node_modules/node-forge/lib/ed25519.js
+index f3e6faa..858ca71 100644
+--- a/node_modules/node-forge/lib/ed25519.js
++++ b/node_modules/node-forge/lib/ed25519.js
+@@ -22,7 +22,6 @@ if(typeof BigInteger === 'undefined') {
+ }
+ 
+ var ByteBuffer = forge.util.ByteBuffer;
+-var NativeBuffer = typeof Buffer === 'undefined' ? Uint8Array : Buffer;
+ 
+ /*
+  * Ed25519 algorithms, see RFC 8032:
+@@ -56,10 +55,10 @@ ed25519.generateKeyPair = function(options) {
+       '"seed" must be a node.js Buffer, Uint8Array, or a binary string.');
+   }
+ 
+-  seed = messageToNativeBuffer({message: seed, encoding: 'binary'});
++  seed = messageToBuffer({message: seed, encoding: 'binary'});
+ 
+-  var pk = new NativeBuffer(ed25519.constants.PUBLIC_KEY_BYTE_LENGTH);
+-  var sk = new NativeBuffer(ed25519.constants.PRIVATE_KEY_BYTE_LENGTH);
++  var pk = new Buffer(ed25519.constants.PUBLIC_KEY_BYTE_LENGTH);
++  var sk = new Buffer(ed25519.constants.PRIVATE_KEY_BYTE_LENGTH);
+   for(var i = 0; i < 32; ++i) {
+     sk[i] = seed[i];
+   }
+@@ -93,7 +92,7 @@ ed25519.privateKeyFromAsn1 = function(obj) {
+   var privateKey = capture.privateKey;
+   // manually extract the private key bytes from nested octet string, see FIXME:
+   // https://github.com/digitalbazaar/forge/blob/master/lib/asn1.js#L542
+-  var privateKeyBytes = messageToNativeBuffer({
++  var privateKeyBytes = messageToBuffer({
+     message: forge.asn1.fromDer(privateKey).value,
+     encoding: 'binary'
+   });
+@@ -130,7 +129,7 @@ ed25519.publicKeyFromAsn1 = function(obj) {
+   if(publicKeyBytes.length !== ed25519.constants.PUBLIC_KEY_BYTE_LENGTH) {
+     throw new Error('Key length is invalid.');
+   }
+-  return messageToNativeBuffer({
++  return messageToBuffer({
+     message: publicKeyBytes,
+     encoding: 'binary'
+   });
+@@ -138,7 +137,7 @@ ed25519.publicKeyFromAsn1 = function(obj) {
+ 
+ ed25519.publicKeyFromPrivateKey = function(options) {
+   options = options || {};
+-  var privateKey = messageToNativeBuffer({
++  var privateKey = messageToBuffer({
+     message: options.privateKey, encoding: 'binary'
+   });
+   if(privateKey.length !== ed25519.constants.PRIVATE_KEY_BYTE_LENGTH) {
+@@ -147,7 +146,7 @@ ed25519.publicKeyFromPrivateKey = function(options) {
+       ed25519.constants.PRIVATE_KEY_BYTE_LENGTH);
+   }
+ 
+-  var pk = new NativeBuffer(ed25519.constants.PUBLIC_KEY_BYTE_LENGTH);
++  var pk = new Buffer(ed25519.constants.PUBLIC_KEY_BYTE_LENGTH);
+   for(var i = 0; i < pk.length; ++i) {
+     pk[i] = privateKey[32 + i];
+   }
+@@ -156,8 +155,8 @@ ed25519.publicKeyFromPrivateKey = function(options) {
+ 
+ ed25519.sign = function(options) {
+   options = options || {};
+-  var msg = messageToNativeBuffer(options);
+-  var privateKey = messageToNativeBuffer({
++  var msg = messageToBuffer(options);
++  var privateKey = messageToBuffer({
+     message: options.privateKey,
+     encoding: 'binary'
+   });
+@@ -171,11 +170,11 @@ ed25519.sign = function(options) {
+       ed25519.constants.PRIVATE_KEY_BYTE_LENGTH);
+   }
+ 
+-  var signedMsg = new NativeBuffer(
++  var signedMsg = new Buffer(
+     ed25519.constants.SIGN_BYTE_LENGTH + msg.length);
+   crypto_sign(signedMsg, msg, msg.length, privateKey);
+ 
+-  var sig = new NativeBuffer(ed25519.constants.SIGN_BYTE_LENGTH);
++  var sig = new Buffer(ed25519.constants.SIGN_BYTE_LENGTH);
+   for(var i = 0; i < sig.length; ++i) {
+     sig[i] = signedMsg[i];
+   }
+@@ -184,13 +183,13 @@ ed25519.sign = function(options) {
+ 
+ ed25519.verify = function(options) {
+   options = options || {};
+-  var msg = messageToNativeBuffer(options);
++  var msg = messageToBuffer(options);
+   if(options.signature === undefined) {
+     throw new TypeError(
+       '"options.signature" must be a node.js Buffer, a Uint8Array, a forge ' +
+       'ByteBuffer, or a binary string.');
+   }
+-  var sig = messageToNativeBuffer({
++  var sig = messageToBuffer({
+     message: options.signature,
+     encoding: 'binary'
+   });
+@@ -199,7 +198,7 @@ ed25519.verify = function(options) {
+       '"options.signature" must have a byte length of ' +
+       ed25519.constants.SIGN_BYTE_LENGTH);
+   }
+-  var publicKey = messageToNativeBuffer({
++  var publicKey = messageToBuffer({
+     message: options.publicKey,
+     encoding: 'binary'
+   });
+@@ -209,8 +208,8 @@ ed25519.verify = function(options) {
+       ed25519.constants.PUBLIC_KEY_BYTE_LENGTH);
+   }
+ 
+-  var sm = new NativeBuffer(ed25519.constants.SIGN_BYTE_LENGTH + msg.length);
+-  var m = new NativeBuffer(ed25519.constants.SIGN_BYTE_LENGTH + msg.length);
++  var sm = new Buffer(ed25519.constants.SIGN_BYTE_LENGTH + msg.length);
++  var m = new Buffer(ed25519.constants.SIGN_BYTE_LENGTH + msg.length);
+   var i;
+   for(i = 0; i < ed25519.constants.SIGN_BYTE_LENGTH; ++i) {
+     sm[i] = sig[i];
+@@ -221,9 +220,9 @@ ed25519.verify = function(options) {
+   return (crypto_sign_open(m, sm, sm.length, publicKey) >= 0);
+ };
+ 
+-function messageToNativeBuffer(options) {
++function messageToBuffer(options) {
+   var message = options.message;
+-  if(message instanceof Uint8Array || message instanceof NativeBuffer) {
++  if(message instanceof Uint8Array || message instanceof Buffer) {
+     return message;
+   }
+ 
+@@ -255,39 +254,73 @@ function messageToNativeBuffer(options) {
+   }
+ 
+   // convert to native buffer
+-  var buffer = new NativeBuffer(message.length());
++  var buffer = new Buffer(message.length());
+   for(var i = 0; i < buffer.length; ++i) {
+     buffer[i] = message.at(i);
+   }
+   return buffer;
+ }
+ 
+-var gf0 = gf();
+-var gf1 = gf([1]);
+-var D = gf([
+-  0x78a3, 0x1359, 0x4dca, 0x75eb, 0xd8ab, 0x4141, 0x0a4d, 0x0070,
+-  0xe898, 0x7779, 0x4079, 0x8cc7, 0xfe73, 0x2b6f, 0x6cee, 0x5203]);
+-var D2 = gf([
+-  0xf159, 0x26b2, 0x9b94, 0xebd6, 0xb156, 0x8283, 0x149a, 0x00e0,
+-  0xd130, 0xeef3, 0x80f2, 0x198e, 0xfce7, 0x56df, 0xd9dc, 0x2406]);
+-var X = gf([
+-  0xd51a, 0x8f25, 0x2d60, 0xc956, 0xa7b2, 0x9525, 0xc760, 0x692c,
+-  0xdc5c, 0xfdd6, 0xe231, 0xc0a4, 0x53fe, 0xcd6e, 0x36d3, 0x2169]);
+-var Y = gf([
+-  0x6658, 0x6666, 0x6666, 0x6666, 0x6666, 0x6666, 0x6666, 0x6666,
+-  0x6666, 0x6666, 0x6666, 0x6666, 0x6666, 0x6666, 0x6666, 0x6666]);
+-var L = new Float64Array([
+-  0xed, 0xd3, 0xf5, 0x5c, 0x1a, 0x63, 0x12, 0x58,
+-  0xd6, 0x9c, 0xf7, 0xa2, 0xde, 0xf9, 0xde, 0x14,
+-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x10]);
+-var I = gf([
+-  0xa0b0, 0x4a0e, 0x1b27, 0xc4ee, 0xe478, 0xad2f, 0x1806, 0x2f43,
+-  0xd7a7, 0x3dfb, 0x0099, 0x2b4d, 0xdf0b, 0x4fc1, 0x2480, 0x2b83]);
++// We are lazy loading the TypedArrays because electron-mksnapshot segfaults
++// till v30.0.0.
++var gf0;
++function initGf0() {
++  if (gf0) return;
++  gf0 = gf();
++}
++var gf1;
++function initGf1() {
++  if (gf1) return;
++  gf1 = gf([1]);
++}
++var D;
++function initD() {
++  if (D) return;
++  D = gf([
++    0x78a3, 0x1359, 0x4dca, 0x75eb, 0xd8ab, 0x4141, 0x0a4d, 0x0070,
++    0xe898, 0x7779, 0x4079, 0x8cc7, 0xfe73, 0x2b6f, 0x6cee, 0x5203]);
++}
++var D2;
++function initD2() {
++  if (D2) return;
++  D2 = gf([
++    0xf159, 0x26b2, 0x9b94, 0xebd6, 0xb156, 0x8283, 0x149a, 0x00e0,
++    0xd130, 0xeef3, 0x80f2, 0x198e, 0xfce7, 0x56df, 0xd9dc, 0x2406]);
++}
++var X;
++function initX() {
++  if (X) return;
++  X = gf([
++    0xd51a, 0x8f25, 0x2d60, 0xc956, 0xa7b2, 0x9525, 0xc760, 0x692c,
++    0xdc5c, 0xfdd6, 0xe231, 0xc0a4, 0x53fe, 0xcd6e, 0x36d3, 0x2169]);
++}
++var Y;
++function initY() {
++  if (Y) return;
++  Y = gf([
++    0x6658, 0x6666, 0x6666, 0x6666, 0x6666, 0x6666, 0x6666, 0x6666,
++    0x6666, 0x6666, 0x6666, 0x6666, 0x6666, 0x6666, 0x6666, 0x6666]);
++}
++var L;
++function initL() {
++  if (L) return;
++  L = new Float64Array([
++    0xed, 0xd3, 0xf5, 0x5c, 0x1a, 0x63, 0x12, 0x58,
++    0xd6, 0x9c, 0xf7, 0xa2, 0xde, 0xf9, 0xde, 0x14,
++    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x10]);
++}
++var I;
++function initI() {
++  if (I) return;
++  I = gf([
++    0xa0b0, 0x4a0e, 0x1b27, 0xc4ee, 0xe478, 0xad2f, 0x1806, 0x2f43,
++    0xd7a7, 0x3dfb, 0x0099, 0x2b4d, 0xdf0b, 0x4fc1, 0x2480, 0x2b83]);
++}
+ 
+ // TODO: update forge buffer implementation to use `Buffer` or `Uint8Array`,
+ // whichever is available, to improve performance
+ function sha512(msg, msgLen) {
+-  // Note: `out` and `msg` are NativeBuffer
++  // Note: `out` and `msg` are Buffer
+   var md = forge.md.sha512.create();
+   var buffer = new ByteBuffer(msg);
+   md.update(buffer.getBytes(msgLen), 'binary');
+@@ -295,7 +328,7 @@ function sha512(msg, msgLen) {
+   if(typeof Buffer !== 'undefined') {
+     return Buffer.from(hash, 'binary');
+   }
+-  var out = new NativeBuffer(ed25519.constants.HASH_BYTE_LENGTH);
++  var out = new Buffer(ed25519.constants.HASH_BYTE_LENGTH);
+   for(var i = 0; i < 64; ++i) {
+     out[i] = hash.charCodeAt(i);
+   }
+@@ -367,7 +400,7 @@ function crypto_sign(sm, m, n, sk) {
+ 
+ function crypto_sign_open(m, sm, n, pk) {
+   var i, mlen;
+-  var t = new NativeBuffer(32);
++  var t = new Buffer(32);
+   var p = [gf(), gf(), gf(), gf()],
+       q = [gf(), gf(), gf(), gf()];
+ 
+@@ -411,6 +444,7 @@ function crypto_sign_open(m, sm, n, pk) {
+ 
+ function modL(r, x) {
+   var carry, i, j, k;
++  initL();
+   for(i = 63; i >= 32; --i) {
+     carry = 0;
+     for(j = i - 32, k = i - 12; j < k; ++j) {
+@@ -457,6 +491,7 @@ function add(p, q) {
+   A(t, q[0], q[1]);
+   M(b, b, t);
+   M(c, p[3], q[3]);
++  initD2();
+   M(c, c, D2);
+   M(d, p[2], q[2]);
+   A(d, d, d);
+@@ -517,9 +552,11 @@ function unpackneg(r, p) {
+       den = gf(), den2 = gf(), den4 = gf(),
+       den6 = gf();
+ 
++  initGf1();
+   set25519(r[2], gf1);
+   unpack25519(r[1], p);
+   S(num, r[1]);
++  initD();
+   M(den, num, D);
+   Z(num, num, r[2]);
+   A(den, r[2], den);
+@@ -539,6 +576,7 @@ function unpackneg(r, p) {
+   S(chk, r[0]);
+   M(chk, chk, den);
+   if(neq25519(chk, num)) {
++    initI();
+     M(r[0], r[0], I);
+   }
+ 
+@@ -549,6 +587,7 @@ function unpackneg(r, p) {
+   }
+ 
+   if(par25519(r[0]) === (p[31] >> 7)) {
++    initGf0();
+     Z(r[0], gf0, r[0]);
+   }
+ 
+@@ -582,8 +621,8 @@ function pow2523(o, i) {
+ }
+ 
+ function neq25519(a, b) {
+-  var c = new NativeBuffer(32);
+-  var d = new NativeBuffer(32);
++  var c = new Buffer(32);
++  var d = new Buffer(32);
+   pack25519(c, a);
+   pack25519(d, b);
+   return crypto_verify_32(c, 0, d, 0);
+@@ -602,14 +641,16 @@ function vn(x, xi, y, yi, n) {
+ }
+ 
+ function par25519(a) {
+-  var d = new NativeBuffer(32);
++  var d = new Buffer(32);
+   pack25519(d, a);
+   return d[0] & 1;
+ }
+ 
+ function scalarmult(p, q, s) {
+   var b, i;
++  initGf0();
+   set25519(p[0], gf0);
++  initGf1();
+   set25519(p[1], gf1);
+   set25519(p[2], gf1);
+   set25519(p[3], gf0);
+@@ -624,8 +665,11 @@ function scalarmult(p, q, s) {
+ 
+ function scalarbase(p, s) {
+   var q = [gf(), gf(), gf(), gf()];
++  initX();
+   set25519(q[0], X);
++  initY();
+   set25519(q[1], Y);
++  initGf1();
+   set25519(q[2], gf1);
+   M(q[3], X, Y);
+   scalarmult(p, q, s);
 diff --git a/node_modules/node-forge/lib/pbkdf2.js b/node_modules/node-forge/lib/pbkdf2.js
 index 714560e..33e5b56 100644
 --- a/node_modules/node-forge/lib/pbkdf2.js
