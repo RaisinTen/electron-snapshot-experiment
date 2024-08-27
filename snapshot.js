@@ -45,12 +45,6 @@ require('node-ipc');
 
 // TODO(RaisinTen): Can we add require('@postman/app-logger');?
 
-// Snapshottable dependencies of 'node-forge'
-{
-  require('node-forge/lib/aes');
-  require('node-forge/lib/aesCipherSuites');
-  require('node-forge/lib/debug');
-  require('node-forge/lib/ed25519');
-}
+require('node-forge');
 
 // TODO(RaisinTen): Can we add require('@postman/pem');?
