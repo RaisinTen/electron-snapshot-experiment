@@ -74,6 +74,7 @@ require('node-ipc');
               // TODO(RaisinTen): Can we add require('winston/node_modules/readable-stream');?
 
               require('winston/node_modules/async/forEach');
+              require('is-stream');
             }
           }
         }
