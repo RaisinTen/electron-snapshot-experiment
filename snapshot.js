@@ -89,6 +89,11 @@ require('node-ipc');
               require('winston/lib/winston/profiler');
             }
           }
+
+          // TODO(RaisinTen): Can we add require('winston/lib/winston/container');?
+          // TODO(RaisinTen): Can we add require('winston-transport');?
+
+          require('logform/json');
         }
       }
     }
