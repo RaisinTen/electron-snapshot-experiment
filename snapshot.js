@@ -83,6 +83,10 @@ require('node-ipc');
 
                 // TODO(RaisinTen): Can we add require('winston/lib/winston/exception-stream');?
               }
+
+              // TODO(RaisinTen): Can we add require('winston-transport/legacy');?
+
+              require('winston/lib/winston/profiler');
             }
           }
         }
