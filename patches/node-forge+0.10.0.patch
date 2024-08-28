@@ -1,5 +1,5 @@
 diff --git a/node_modules/node-forge/lib/ed25519.js b/node_modules/node-forge/lib/ed25519.js
-index f3e6faa..858ca71 100644
+index f3e6faa..ed764bc 100644
 --- a/node_modules/node-forge/lib/ed25519.js
 +++ b/node_modules/node-forge/lib/ed25519.js
 @@ -22,7 +22,6 @@ if(typeof BigInteger === 'undefined') {
@@ -133,7 +133,7 @@ index f3e6faa..858ca71 100644
      return message;
    }
  
-@@ -255,39 +254,73 @@ function messageToNativeBuffer(options) {
+@@ -255,39 +254,74 @@ function messageToNativeBuffer(options) {
    }
  
    // convert to native buffer
@@ -168,6 +168,7 @@ index f3e6faa..858ca71 100644
 -  0xd7a7, 0x3dfb, 0x0099, 0x2b4d, 0xdf0b, 0x4fc1, 0x2480, 0x2b83]);
 +// We are lazy loading the TypedArrays because electron-mksnapshot segfaults
 +// till v30.0.0.
++// TODO(RaisinTen): Directly assign the values when we are on >= v30.0.0.
 +var gf0;
 +function initGf0() {
 +  if (gf0) return;
@@ -230,7 +231,7 @@ index f3e6faa..858ca71 100644
    var md = forge.md.sha512.create();
    var buffer = new ByteBuffer(msg);
    md.update(buffer.getBytes(msgLen), 'binary');
-@@ -295,7 +328,7 @@ function sha512(msg, msgLen) {
+@@ -295,7 +329,7 @@ function sha512(msg, msgLen) {
    if(typeof Buffer !== 'undefined') {
      return Buffer.from(hash, 'binary');
    }
@@ -239,7 +240,7 @@ index f3e6faa..858ca71 100644
    for(var i = 0; i < 64; ++i) {
      out[i] = hash.charCodeAt(i);
    }
-@@ -367,7 +400,7 @@ function crypto_sign(sm, m, n, sk) {
+@@ -367,7 +401,7 @@ function crypto_sign(sm, m, n, sk) {
  
  function crypto_sign_open(m, sm, n, pk) {
    var i, mlen;
@@ -248,7 +249,7 @@ index f3e6faa..858ca71 100644
    var p = [gf(), gf(), gf(), gf()],
        q = [gf(), gf(), gf(), gf()];
  
-@@ -411,6 +444,7 @@ function crypto_sign_open(m, sm, n, pk) {
+@@ -411,6 +445,7 @@ function crypto_sign_open(m, sm, n, pk) {
  
  function modL(r, x) {
    var carry, i, j, k;
@@ -256,7 +257,7 @@ index f3e6faa..858ca71 100644
    for(i = 63; i >= 32; --i) {
      carry = 0;
      for(j = i - 32, k = i - 12; j < k; ++j) {
-@@ -457,6 +491,7 @@ function add(p, q) {
+@@ -457,6 +492,7 @@ function add(p, q) {
    A(t, q[0], q[1]);
    M(b, b, t);
    M(c, p[3], q[3]);
@@ -264,7 +265,7 @@ index f3e6faa..858ca71 100644
    M(c, c, D2);
    M(d, p[2], q[2]);
    A(d, d, d);
-@@ -517,9 +552,11 @@ function unpackneg(r, p) {
+@@ -517,9 +553,11 @@ function unpackneg(r, p) {
        den = gf(), den2 = gf(), den4 = gf(),
        den6 = gf();
  
@@ -276,7 +277,7 @@ index f3e6faa..858ca71 100644
    M(den, num, D);
    Z(num, num, r[2]);
    A(den, r[2], den);
-@@ -539,6 +576,7 @@ function unpackneg(r, p) {
+@@ -539,6 +577,7 @@ function unpackneg(r, p) {
    S(chk, r[0]);
    M(chk, chk, den);
    if(neq25519(chk, num)) {
@@ -284,7 +285,7 @@ index f3e6faa..858ca71 100644
      M(r[0], r[0], I);
    }
  
-@@ -549,6 +587,7 @@ function unpackneg(r, p) {
+@@ -549,6 +588,7 @@ function unpackneg(r, p) {
    }
  
    if(par25519(r[0]) === (p[31] >> 7)) {
@@ -292,7 +293,7 @@ index f3e6faa..858ca71 100644
      Z(r[0], gf0, r[0]);
    }
  
-@@ -582,8 +621,8 @@ function pow2523(o, i) {
+@@ -582,8 +622,8 @@ function pow2523(o, i) {
  }
  
  function neq25519(a, b) {
@@ -303,7 +304,7 @@ index f3e6faa..858ca71 100644
    pack25519(c, a);
    pack25519(d, b);
    return crypto_verify_32(c, 0, d, 0);
-@@ -602,14 +641,16 @@ function vn(x, xi, y, yi, n) {
+@@ -602,14 +642,16 @@ function vn(x, xi, y, yi, n) {
  }
  
  function par25519(a) {
@@ -321,7 +322,7 @@ index f3e6faa..858ca71 100644
    set25519(p[1], gf1);
    set25519(p[2], gf1);
    set25519(p[3], gf0);
-@@ -624,8 +665,11 @@ function scalarmult(p, q, s) {
+@@ -624,8 +666,11 @@ function scalarmult(p, q, s) {
  
  function scalarbase(p, s) {
    var q = [gf(), gf(), gf(), gf()];
