@@ -45,7 +45,25 @@ require('node-ipc');
 
 // Snapshottable dependencies of '@postman/app-logger'
 {
-  require('@postman/app-logger/lib/originators');
+  // Snapshottable dependencies of '@postman/app-logger/lib'
+  {
+    require('@postman/app-logger/lib/originators');
+
+    // Snapshottable dependencies of '@postman/app-logger/collectors'
+    {
+      // Snapshottable dependencies of '@postman/app-logger/collectors/winston/WinstonCollector'
+      {
+        // Snapshottable dependencies of 'winston'
+        {
+          // Snapshottable dependencies of 'logform'
+          {
+            require('logform/format');
+            require('logform/levels');
+          }
+        }
+      }
+    }
+  }
 }
 
 require('node-forge');
