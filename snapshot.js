@@ -43,7 +43,10 @@ require('ws');
 require('@raisinten/aes-crypto-js');
 require('node-ipc');
 
-// TODO(RaisinTen): Can we add require('@postman/app-logger');?
+// Snapshottable dependencies of '@postman/app-logger'
+{
+  require('@postman/app-logger/lib/originators');
+}
 
 require('node-forge');
 
