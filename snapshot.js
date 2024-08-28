@@ -65,6 +65,17 @@ require('node-ipc');
           require('winston/package.json');
 
           // TODO(RaisinTen): Can we add require('winston/lib/winston/transports');?
+          // TODO(RaisinTen): Can we add require('winston/lib/winston/config');?
+
+          // Snapshottable dependencies of 'winston/lib/winston/create-logger'
+          {
+            // Snapshottable dependencies of 'winston/lib/winston/logger'
+            {
+              // TODO(RaisinTen): Can we add require('winston/node_modules/readable-stream');?
+
+              require('winston/node_modules/async/forEach');
+            }
+          }
         }
       }
     }
