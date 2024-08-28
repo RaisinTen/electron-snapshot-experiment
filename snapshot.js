@@ -60,6 +60,11 @@ require('node-ipc');
             require('logform/format');
             require('logform/levels');
           }
+
+          require('winston/lib/winston/common');
+          require('winston/package.json');
+
+          // TODO(RaisinTen): Can we add require('winston/lib/winston/transports');?
         }
       }
     }
