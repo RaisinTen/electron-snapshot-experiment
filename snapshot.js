@@ -75,6 +75,14 @@ require('node-ipc');
 
               require('winston/node_modules/async/forEach');
               require('is-stream');
+
+              // Snapshottable dependencies of 'winston/lib/winston/exception-handler'
+              {
+                require('diagnostics');
+                require('one-time');
+
+                // TODO(RaisinTen): Can we add require('winston/lib/winston/exception-stream');?
+              }
             }
           }
         }
