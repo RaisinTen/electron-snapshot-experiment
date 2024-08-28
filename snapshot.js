@@ -95,6 +95,8 @@ require('node-ipc');
 
           require('logform/json');
         }
+
+        require('@postman/app-logger/lib/helpers/format');
       }
     }
   }
