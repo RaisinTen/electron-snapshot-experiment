@@ -80,8 +80,7 @@ require('node-ipc');
               {
                 require('diagnostics');
                 require('one-time');
-
-                // TODO(RaisinTen): Can we add require('winston/lib/winston/exception-stream');?
+                require('winston/lib/winston/exception-stream');
               }
 
               // TODO(RaisinTen): Can we add require('winston-transport/legacy');?

@@ -1,8 +1,8 @@
 diff --git a/node_modules/winston/lib/winston/exception-stream.js b/node_modules/winston/lib/winston/exception-stream.js
-index 5afdeb2..3d5d435 100644
+index 5afdeb2..d7a5833 100644
 --- a/node_modules/winston/lib/winston/exception-stream.js
 +++ b/node_modules/winston/lib/winston/exception-stream.js
-@@ -7,7 +7,7 @@
+@@ -7,14 +7,14 @@
  
  'use strict';
  
@@ -11,6 +11,23 @@ index 5afdeb2..3d5d435 100644
  
  /**
   * TODO: add class description.
+  * @type {ExceptionStream}
+  * @extends {Writable}
+  */
+-module.exports = class ExceptionStream extends Writable {
++module.exports = class ExceptionStream {
+   /**
+    * Constructor function for the ExceptionStream responsible for wrapping a
+    * TransportStream; only allowing writes of `info` objects with
+@@ -22,7 +22,7 @@ module.exports = class ExceptionStream extends Writable {
+    * @param {!TransportStream} transport - Stream to filter to exceptions
+    */
+   constructor(transport) {
+-    super({ objectMode: true });
++    Writable.call(this, { objectMode: true });
+ 
+     if (!transport) {
+       throw new Error('ExceptionStream requires a TransportStream instance.');
 diff --git a/node_modules/winston/lib/winston/logger.js b/node_modules/winston/lib/winston/logger.js
 index f206f1a..a5aa36f 100644
 --- a/node_modules/winston/lib/winston/logger.js

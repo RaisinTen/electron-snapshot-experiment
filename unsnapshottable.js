@@ -175,3 +175,12 @@ function extendClass(target, base) {
   forge.random.createInstance = spawnPrng;
   require.cache[require.resolve('node-forge/lib/random')] = forge.random;
 }
+
+// Move the code from 'winston/lib/winston/exception-stream.js' for extending
+// ExceptionStream from stream.Writable here because the 'stream' module is not
+// available in the V8 snapshot.
+{
+  const ExceptionStream = require('winston/lib/winston/exception-stream');
+  const { Writable } = require('node:stream');
+  extendClass(ExceptionStream, Writable);
+}
