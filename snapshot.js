@@ -55,12 +55,7 @@ require('node-ipc');
       {
         // Snapshottable dependencies of 'winston'
         {
-          // Snapshottable dependencies of 'logform'
-          {
-            require('logform/format');
-            require('logform/levels');
-          }
-
+          require('logform');
           require('winston/lib/winston/common');
           require('winston/package.json');
           require('winston/lib/winston/transports');
