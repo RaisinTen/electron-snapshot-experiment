@@ -71,13 +71,14 @@ require('node-ipc');
           {
             // Snapshottable dependencies of 'winston/lib/winston/logger'
             {
-              // TODO(RaisinTen): Can we add require('winston/node_modules/readable-stream');?
-
               require('winston/node_modules/async/forEach');
               require('is-stream');
               require('winston/lib/winston/exception-handler');
 
-              // TODO(RaisinTen): Can we add require('winston-transport/legacy');?
+              // Snapshottable dependencies of 'winston-transport/legacy'
+              {
+                require('winston-transport/modern');
+              }
 
               require('winston/lib/winston/profiler');
             }

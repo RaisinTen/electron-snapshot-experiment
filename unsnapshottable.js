@@ -1,5 +1,6 @@
 const util = require('node:util');
 const { EventEmitter } = require('node:events');
+const { Writable } = require('node:stream');
 const Agent = require('agent-base');
 
 // Dynamically make the `target` class extend from `base`. Differences with
@@ -181,6 +182,13 @@ function extendClass(target, base) {
 // available in the V8 snapshot.
 {
   const ExceptionStream = require('winston/lib/winston/exception-stream');
-  const { Writable } = require('node:stream');
   extendClass(ExceptionStream, Writable);
+}
+
+// Move the code from 'winston-transport/modern.js' for extending
+// TransportStream from stream.Writable here because the 'stream' module is not
+// available in the V8 snapshot.
+{
+  const TransportStream = require('winston-transport/modern');
+  util.inherits(TransportStream, Writable);
 }

@@ -1,13 +1,25 @@
 diff --git a/node_modules/winston-transport/modern.js b/node_modules/winston-transport/modern.js
-index 37eeb3d..af84894 100644
+index 37eeb3d..c05b973 100644
 --- a/node_modules/winston-transport/modern.js
 +++ b/node_modules/winston-transport/modern.js
-@@ -1,7 +1,7 @@
+@@ -1,7 +1,6 @@
  'use strict';
  
- const util = require('util');
+-const util = require('util');
 -const Writable = require('readable-stream/lib/_stream_writable.js');
 +const { Writable } = require('stream');
  const { LEVEL } = require('triple-beam');
  
  /**
+@@ -53,11 +52,6 @@ const TransportStream = module.exports = function TransportStream(options = {})
+   });
+ };
+ 
+-/*
+- * Inherit from Writeable using Node.js built-ins
+- */
+-util.inherits(TransportStream, Writable);
+-
+ /**
+  * Writes the info object to our transport instance.
+  * @param {mixed} info - TODO: add param description.
