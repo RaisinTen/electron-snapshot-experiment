@@ -98,6 +98,10 @@ require('node-ipc');
 
         require('@postman/app-logger/lib/helpers/format');
       }
+
+      // TODO(RaisinTen): Can we add require('@postman/app-logger/lib/collectors/winston/FileCollector');?
+      // TODO(RaisinTen): Can we add require('@postman/app-logger/lib/collectors/winston/NewRelicCollector');?
+      // TODO(RaisinTen): Can we add require('@postman/app-logger/lib/collectors/winston/SentryCollector');?
     }
   }
 }
