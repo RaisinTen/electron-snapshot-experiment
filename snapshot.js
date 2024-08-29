@@ -42,24 +42,7 @@ require('@postman/app-updater');
 require('ws');
 require('@raisinten/aes-crypto-js');
 require('node-ipc');
-
-// Snapshottable dependencies of '@postman/app-logger'
-{
-  // Snapshottable dependencies of '@postman/app-logger/lib'
-  {
-    require('@postman/app-logger/lib/originators');
-
-    // Snapshottable dependencies of '@postman/app-logger/collectors'
-    {
-      require('@postman/app-logger/lib/collectors/winston/WinstonCollector');
-
-      // TODO(RaisinTen): Can we add require('@postman/app-logger/lib/collectors/winston/FileCollector');?
-      // TODO(RaisinTen): Can we add require('@postman/app-logger/lib/collectors/winston/NewRelicCollector');?
-      // TODO(RaisinTen): Can we add require('@postman/app-logger/lib/collectors/winston/SentryCollector');?
-    }
-  }
-}
-
+require('@postman/app-logger');
 require('node-forge');
 
 // TODO(RaisinTen): Can we add require('@postman/pem');?
