@@ -1,0 +1,13 @@
+diff --git a/node_modules/winston-transport/modern.js b/node_modules/winston-transport/modern.js
+index 37eeb3d..af84894 100644
+--- a/node_modules/winston-transport/modern.js
++++ b/node_modules/winston-transport/modern.js
+@@ -1,7 +1,7 @@
+ 'use strict';
+ 
+ const util = require('util');
+-const Writable = require('readable-stream/lib/_stream_writable.js');
++const { Writable } = require('stream');
+ const { LEVEL } = require('triple-beam');
+ 
+ /**

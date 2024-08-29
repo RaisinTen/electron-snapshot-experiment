@@ -1,0 +1,26 @@
+diff --git a/node_modules/winston/lib/winston/exception-stream.js b/node_modules/winston/lib/winston/exception-stream.js
+index 5afdeb2..3d5d435 100644
+--- a/node_modules/winston/lib/winston/exception-stream.js
++++ b/node_modules/winston/lib/winston/exception-stream.js
+@@ -7,7 +7,7 @@
+ 
+ 'use strict';
+ 
+-const Writable = require('readable-stream/writable');
++const { Writable } = require('stream');
+ 
+ /**
+  * TODO: add class description.
+diff --git a/node_modules/winston/lib/winston/logger.js b/node_modules/winston/lib/winston/logger.js
+index f206f1a..a5aa36f 100644
+--- a/node_modules/winston/lib/winston/logger.js
++++ b/node_modules/winston/lib/winston/logger.js
+@@ -7,7 +7,7 @@
+ 
+ 'use strict';
+ 
+-const stream = require('readable-stream');
++const stream = require('stream');
+ const asyncForEach = require('async/forEach');
+ const { LEVEL, SPLAT } = require('triple-beam');
+ const isStream = require('is-stream');
