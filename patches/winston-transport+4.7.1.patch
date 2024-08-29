@@ -1,3 +1,26 @@
+diff --git a/node_modules/winston-transport/legacy.js b/node_modules/winston-transport/legacy.js
+index 6cc9522..26cda28 100644
+--- a/node_modules/winston-transport/legacy.js
++++ b/node_modules/winston-transport/legacy.js
+@@ -1,6 +1,5 @@
+ 'use strict';
+ 
+-const util = require('util');
+ const { LEVEL } = require('triple-beam');
+ const TransportStream = require('./modern');
+ 
+@@ -38,11 +37,6 @@ const LegacyTransportStream = module.exports = function LegacyTransportStream(op
+   }
+ };
+ 
+-/*
+- * Inherit from TransportStream using Node.js built-ins
+- */
+-util.inherits(LegacyTransportStream, TransportStream);
+-
+ /**
+  * Writes the info object to our transport instance.
+  * @param {mixed} info - TODO: add param description.
 diff --git a/node_modules/winston-transport/modern.js b/node_modules/winston-transport/modern.js
 index 37eeb3d..c05b973 100644
 --- a/node_modules/winston-transport/modern.js

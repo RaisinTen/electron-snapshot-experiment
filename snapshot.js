@@ -74,12 +74,7 @@ require('node-ipc');
               require('winston/node_modules/async/forEach');
               require('is-stream');
               require('winston/lib/winston/exception-handler');
-
-              // Snapshottable dependencies of 'winston-transport/legacy'
-              {
-                require('winston-transport/modern');
-              }
-
+              require('winston-transport/legacy');
               require('winston/lib/winston/profiler');
             }
           }
