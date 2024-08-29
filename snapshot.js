@@ -67,7 +67,8 @@ require('node-ipc');
           // Snapshottable dependencies of 'winston/lib/winston/transports'
           {
             require('winston/lib/winston/transports/console');
-            // TODO(RaisinTen): Can we add require('winston/lib/winston/transports/file');?
+            require('winston/lib/winston/transports/file');
+
             // TODO(RaisinTen): Can we add require('winston/lib/winston/transports/http');?
             // TODO(RaisinTen): Can we add require('winston/lib/winston/transports/stream');?
           }

@@ -41,6 +41,32 @@ index f206f1a..a5aa36f 100644
  const asyncForEach = require('async/forEach');
  const { LEVEL, SPLAT } = require('triple-beam');
  const isStream = require('is-stream');
+diff --git a/node_modules/winston/lib/winston/tail-file.js b/node_modules/winston/lib/winston/tail-file.js
+index 9870150..0e07cb8 100644
+--- a/node_modules/winston/lib/winston/tail-file.js
++++ b/node_modules/winston/lib/winston/tail-file.js
+@@ -9,7 +9,7 @@
+ 
+ const fs = require('fs');
+ const { StringDecoder } = require('string_decoder');
+-const { Stream } = require('readable-stream');
++const { Stream } = require('stream');
+ 
+ /**
+  * Simple no-op function.
+diff --git a/node_modules/winston/lib/winston/transports/file.js b/node_modules/winston/lib/winston/transports/file.js
+index fa68e6d..4b2646c 100644
+--- a/node_modules/winston/lib/winston/transports/file.js
++++ b/node_modules/winston/lib/winston/transports/file.js
+@@ -12,7 +12,7 @@ const path = require('path');
+ const asyncSeries = require('async/series');
+ const zlib = require('zlib');
+ const { MESSAGE } = require('triple-beam');
+-const { Stream, PassThrough } = require('readable-stream');
++const { Stream, PassThrough } = require('stream');
+ const TransportStream = require('winston-transport');
+ const debug = require('diagnostics')('winston:file');
+ const os = require('os');
 diff --git a/node_modules/winston/lib/winston/transports/index.js b/node_modules/winston/lib/winston/transports/index.js
 index f2f7cc3..f981b8a 100644
 --- a/node_modules/winston/lib/winston/transports/index.js
