@@ -41,3 +41,64 @@ index f206f1a..a5aa36f 100644
  const asyncForEach = require('async/forEach');
  const { LEVEL, SPLAT } = require('triple-beam');
  const isStream = require('is-stream');
+diff --git a/node_modules/winston/lib/winston/transports/index.js b/node_modules/winston/lib/winston/transports/index.js
+index f2f7cc3..f981b8a 100644
+--- a/node_modules/winston/lib/winston/transports/index.js
++++ b/node_modules/winston/lib/winston/transports/index.js
+@@ -7,50 +7,9 @@
+ 
+ 'use strict';
+ 
+-/**
+- * TODO: add property description.
+- * @type {Console}
+- */
+-Object.defineProperty(exports, 'Console', {
+-  configurable: true,
+-  enumerable: true,
+-  get() {
+-    return require('./console');
+-  }
+-});
+-
+-/**
+- * TODO: add property description.
+- * @type {File}
+- */
+-Object.defineProperty(exports, 'File', {
+-  configurable: true,
+-  enumerable: true,
+-  get() {
+-    return require('./file');
+-  }
+-});
+-
+-/**
+- * TODO: add property description.
+- * @type {Http}
+- */
+-Object.defineProperty(exports, 'Http', {
+-  configurable: true,
+-  enumerable: true,
+-  get() {
+-    return require('./http');
+-  }
+-});
+-
+-/**
+- * TODO: add property description.
+- * @type {Stream}
+- */
+-Object.defineProperty(exports, 'Stream', {
+-  configurable: true,
+-  enumerable: true,
+-  get() {
+-    return require('./stream');
+-  }
+-});
++// Eagerly require() and export the modules because these will become a part of
++// the V8 snapshot.
++module.exports.Console = require('./console');
++module.exports.File = require('./file');
++module.exports.Http = require('./http');
++module.exports.Stream = require('./stream');
