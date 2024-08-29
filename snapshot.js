@@ -68,8 +68,8 @@ require('node-ipc');
           {
             require('winston/lib/winston/transports/console');
             require('winston/lib/winston/transports/file');
+            require('winston/lib/winston/transports/http');
 
-            // TODO(RaisinTen): Can we add require('winston/lib/winston/transports/http');?
             // TODO(RaisinTen): Can we add require('winston/lib/winston/transports/stream');?
           }
 

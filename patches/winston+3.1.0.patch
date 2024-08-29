@@ -67,6 +67,19 @@ index fa68e6d..4b2646c 100644
  const TransportStream = require('winston-transport');
  const debug = require('diagnostics')('winston:file');
  const os = require('os');
+diff --git a/node_modules/winston/lib/winston/transports/http.js b/node_modules/winston/lib/winston/transports/http.js
+index 1e19815..aec5a42 100644
+--- a/node_modules/winston/lib/winston/transports/http.js
++++ b/node_modules/winston/lib/winston/transports/http.js
+@@ -9,7 +9,7 @@
+ 
+ const http = require('http');
+ const https = require('https');
+-const { Stream } = require('readable-stream');
++const { Stream } = require('stream');
+ const TransportStream = require('winston-transport');
+ 
+ /**
 diff --git a/node_modules/winston/lib/winston/transports/index.js b/node_modules/winston/lib/winston/transports/index.js
 index f2f7cc3..f981b8a 100644
 --- a/node_modules/winston/lib/winston/transports/index.js
