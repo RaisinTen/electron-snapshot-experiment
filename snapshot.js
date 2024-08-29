@@ -51,11 +51,7 @@ require('node-ipc');
 
     // Snapshottable dependencies of '@postman/app-logger/collectors'
     {
-      // Snapshottable dependencies of '@postman/app-logger/collectors/winston/WinstonCollector'
-      {
-        require('winston');
-        require('@postman/app-logger/lib/helpers/format');
-      }
+      require('@postman/app-logger/lib/collectors/winston/WinstonCollector');
 
       // TODO(RaisinTen): Can we add require('@postman/app-logger/lib/collectors/winston/FileCollector');?
       // TODO(RaisinTen): Can we add require('@postman/app-logger/lib/collectors/winston/NewRelicCollector');?
