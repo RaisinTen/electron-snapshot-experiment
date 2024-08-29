@@ -208,3 +208,93 @@ function extendClass(target, base) {
   const Logger = require('winston/lib/winston/logger');
   extendClass(Logger, Transform);
 }
+
+// Move the code from 'winston' for creating a logger and assigning dependent
+// fields on the winston exports object here because the logger creation depends
+// on the Node.js stream module which is not a part of the V8 snapshot.
+{
+  const winston = require('winston');
+
+  /**
+   * We create and expose a 'defaultLogger' so that the programmer may do the
+   * following without the need to create an instance of winston.Logger directly:
+   * @example
+   *   const winston = require('winston');
+   *   winston.log('info', 'some message');
+   *   winston.error('some error');
+   */
+  const defaultLogger = winston.createLogger();
+
+  // Pass through the target methods onto `winston.
+  Object.keys(winston.config.npm.levels).concat([
+    'log',
+    'query',
+    'stream',
+    'add',
+    'remove',
+    'clear',
+    'profile',
+    'startTimer',
+    'handleExceptions',
+    'unhandleExceptions',
+    'configure'
+  ]).forEach(method => (
+    winston[method] = (...args) => defaultLogger[method](...args)
+  ));
+
+  /**
+   * Define getter / setter for the default logger level which need to be exposed
+   * by winston.
+   * @type {string}
+   */
+  Object.defineProperty(winston, 'level', {
+    get() {
+      return defaultLogger.level;
+    },
+    set(val) {
+      defaultLogger.level = val;
+    }
+  });
+
+  /**
+   * Define getter for `exceptions` which replaces `handleExceptions` and
+   * `unhandleExceptions`.
+   * @type {Object}
+   */
+  Object.defineProperty(winston, 'exceptions', {
+    get() {
+      return defaultLogger.exceptions;
+    }
+  });
+
+  /**
+   * Define getters / setters for appropriate properties of the default logger
+   * which need to be exposed by winston.
+   * @type {Logger}
+   */
+  [
+    'exitOnError'
+  ].forEach(prop => {
+    Object.defineProperty(winston, prop, {
+      get() {
+        return defaultLogger[prop];
+      },
+      set(val) {
+        defaultLogger[prop] = val;
+      }
+    });
+  });
+
+  /**
+   * The default transports and exceptionHandlers for the default winston logger.
+   * @type {Object}
+   */
+  Object.defineProperty(winston, 'default', {
+    get() {
+      return {
+        exceptionHandlers: defaultLogger.exceptionHandlers,
+        transports: defaultLogger.transports
+      };
+    }
+  });
+}

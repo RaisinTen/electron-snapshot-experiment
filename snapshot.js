@@ -53,18 +53,7 @@ require('node-ipc');
     {
       // Snapshottable dependencies of '@postman/app-logger/collectors/winston/WinstonCollector'
       {
-        // Snapshottable dependencies of 'winston'
-        {
-          require('logform');
-          require('winston/lib/winston/common');
-          require('winston/package.json');
-          require('winston/lib/winston/transports');
-          require('winston/lib/winston/config');
-          require('winston/lib/winston/create-logger');
-          require('winston/lib/winston/container');
-          require('winston-transport');
-        }
-
+        require('winston');
         require('@postman/app-logger/lib/helpers/format');
       }
 
