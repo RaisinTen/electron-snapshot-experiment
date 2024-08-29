@@ -59,8 +59,7 @@ require('node-ipc');
           require('winston/lib/winston/common');
           require('winston/package.json');
           require('winston/lib/winston/transports');
-
-          // TODO(RaisinTen): Can we add require('winston/lib/winston/config');?
+          require('winston/lib/winston/config');
 
           // Snapshottable dependencies of 'winston/lib/winston/create-logger'
           {
@@ -76,8 +75,6 @@ require('node-ipc');
 
           // TODO(RaisinTen): Can we add require('winston/lib/winston/container');?
           // TODO(RaisinTen): Can we add require('winston-transport');?
-
-          require('logform/json');
         }
 
         require('@postman/app-logger/lib/helpers/format');
