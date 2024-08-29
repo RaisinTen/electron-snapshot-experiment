@@ -30,12 +30,12 @@ This experiment shows how you can use V8 snapshot to speed up the `require()`s f
 
 This has successfully removed 81% of the time spent running all the `require()`s causing an overall 36% performance improvement to the total startup time with minor changes to the Electron startup time and binary sizes!
 
-||Before|After|% change|
-|-|-|-|-|
-|Total startup time|426ms|272ms|36%|
-|Total `require()`s time|215ms|41ms|81%|
-|Electron startup time|211ms|231ms|-10%|
-|Electron binary size|237MB|238MB|-5%|
+||Before|After|Difference|% change|
+|-|-|-|-|-|
+|Total startup time|426ms|272ms|154ms|36%|
+|Total `require()`s time|215ms|41ms|174ms|81%|
+|Electron startup time|211ms|231ms|-20ms|-10%|
+|Electron binary size|227MB|238MB|-11MB|-5%|
 
 ## Explanation
 
