@@ -61,8 +61,8 @@ require('node-ipc');
           require('winston/lib/winston/transports');
           require('winston/lib/winston/config');
           require('winston/lib/winston/create-logger');
+          require('winston/lib/winston/container');
 
-          // TODO(RaisinTen): Can we add require('winston/lib/winston/container');?
           // TODO(RaisinTen): Can we add require('winston-transport');?
         }
 
