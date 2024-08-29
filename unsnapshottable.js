@@ -1,6 +1,6 @@
 const util = require('node:util');
 const { EventEmitter } = require('node:events');
-const { Writable } = require('node:stream');
+const { Writable, Transform } = require('node:stream');
 const Agent = require('agent-base');
 const TransportStream = require('winston-transport/modern');
 
@@ -199,4 +199,12 @@ function extendClass(target, base) {
 {
   const LegacyTransportStream = require('winston-transport/legacy');
   util.inherits(LegacyTransportStream, TransportStream);
+}
+
+// Move the code from 'winston/lib/winston/logger.js' for extending
+// Logger from stream.Transform here because the 'stream' module is not
+// available in the V8 snapshot.
+{
+  const Logger = require('winston/lib/winston/logger');
+  extendClass(Logger, Transform);
 }

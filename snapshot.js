@@ -63,14 +63,7 @@ require('node-ipc');
 
           // Snapshottable dependencies of 'winston/lib/winston/create-logger'
           {
-            // Snapshottable dependencies of 'winston/lib/winston/logger'
-            {
-              require('winston/node_modules/async/forEach');
-              require('is-stream');
-              require('winston/lib/winston/exception-handler');
-              require('winston-transport/legacy');
-              require('winston/lib/winston/profiler');
-            }
+            require('winston/lib/winston/logger');
           }
 
           // TODO(RaisinTen): Can we add require('winston/lib/winston/container');?

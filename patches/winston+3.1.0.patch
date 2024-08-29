@@ -29,7 +29,7 @@ index 5afdeb2..d7a5833 100644
      if (!transport) {
        throw new Error('ExceptionStream requires a TransportStream instance.');
 diff --git a/node_modules/winston/lib/winston/logger.js b/node_modules/winston/lib/winston/logger.js
-index f206f1a..a5aa36f 100644
+index f206f1a..2964c02 100644
 --- a/node_modules/winston/lib/winston/logger.js
 +++ b/node_modules/winston/lib/winston/logger.js
 @@ -7,7 +7,7 @@
@@ -41,6 +41,23 @@ index f206f1a..a5aa36f 100644
  const asyncForEach = require('async/forEach');
  const { LEVEL, SPLAT } = require('triple-beam');
  const isStream = require('is-stream');
+@@ -22,14 +22,14 @@ const config = require('./config');
+  * @type {Logger}
+  * @extends {stream.Transform}
+  */
+-class Logger extends stream.Transform {
++class Logger {
+   /**
+    * Constructor function for the Logger object responsible for persisting log
+    * messages and metadata to one or more transports.
+    * @param {!Object} options - foo
+    */
+   constructor(options) {
+-    super({
++    stream.Transform.call(this, {
+       objectMode: true
+     });
+     this.configure(options);
 diff --git a/node_modules/winston/lib/winston/tail-file.js b/node_modules/winston/lib/winston/tail-file.js
 index 9870150..0e07cb8 100644
 --- a/node_modules/winston/lib/winston/tail-file.js
