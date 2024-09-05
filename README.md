@@ -189,3 +189,33 @@ https://github.com/RaisinTen/electron-snapshot-experiment/blob/d683290bef03a8f74
 It creates the `v8_context_snapshot.x86_64.bin` and `snapshot_blob.bin` files, of which only `v8_context_snapshot.x86_64.bin` is required.
 
 In [`tools/copy-v8-snapshot.js`](tools/copy-v8-snapshot.js), the `v8_context_snapshot.x86_64.bin` file is copied into the electron bundle and renamed to `browser_v8_context_snapshot.bin`. Then the [`@electron/fuses`](https://github.com/electron/fuses) module is used to flip the [`loadBrowserProcessSpecificV8Snapshot`](https://www.electronjs.org/docs/latest/tutorial/fuses#loadbrowserprocessspecificv8snapshot) fuse of the electron binary to `true`, so that during startup, the Electron browser process loads the V8 heap from the `browser_v8_context_snapshot.bin` V8 snapshot file.
+
+### App using the snapshot
+
+```mermaid
+flowchart TD
+
+electron -- loads --> browser_v8_context_snapshot.bin
+electron -- runs --> main.js -- runs --> v8-snapshots-util.js
+v8-snapshots-util.js -- monkey-patches --> require["require(...)"] -- load modules from --> browser_v8_context_snapshot.bin
+main.js -- hydrates the snapshot --> unsnapshottable.js
+main.js --> require
+```
+
+The `yarn start` command is used to start the app.
+
+During startup, Electron loads the `browser_v8_context_snapshot.bin` file and deserializes the V8 heap from it. Now, the `snapshotResult` variable which was defined in the `cache/snapshot.js` V8 snapshot script would be available in the current V8 context. Then when Electron starts executing the app code from `main.js`, the [`v8-snapshots-util.js`](v8-snapshots-util.js) script gets run at first.
+
+The `snapshotResult.customRequire.cache` variable is prepopulated with a map of module paths and the exports objects of those modules. Since the `snapshotResult` variable would also be available to the `v8-snapshots-util.js` script, it monkey-patches the `require()` functionality, so that it is optimized to return the module exports object directly from the `snapshotResult.customRequire.cache` map for modules that belong to the V8 snapshot and using the default functionality of compiling and executing the modules from scratch for modules that do not belong to the V8 snapshot:
+
+https://github.com/RaisinTen/electron-snapshot-experiment/blob/e95111b260dfbb7bd17b0ccb499478bbe8e4ef45/v8-snapshots-util.js#L6-L29
+
+Then `v8-snapshots-util.js` calls `snapshotResult.setGlobals()` to replace the polyfilled globals present in the V8 snapshot, like `customRequire()` for `require()`, with the actual ones that are available at runtime, so that when the exported code gets run it uses the actual globals instead of the limited polyfills defined in `cache/snapshot.js`:
+
+https://github.com/RaisinTen/electron-snapshot-experiment/blob/e95111b260dfbb7bd17b0ccb499478bbe8e4ef45/v8-snapshots-util.js#L31-L38
+
+Now that `require()` has been configured to load dependency modules from the V8 snapshot, `main.js` runs [`unsnapshottable.js`](unsnapshottable.js) to execute the parts of those modules that had to be patched because those were not snapshottable.
+
+Finally, the application code is ready to use the dependency modules from the V8 snapshot!
+
+https://github.com/RaisinTen/electron-snapshot-experiment/blob/e95111b260dfbb7bd17b0ccb499478bbe8e4ef45/main.js#L24-L42
