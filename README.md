@@ -37,6 +37,14 @@ This has successfully removed 81% of the time spent running all the `require()`s
 |Electron startup time|211ms|231ms|-20ms|-10%|
 |Electron binary size|227MB|238MB|-11MB|-5%|
 
+## Usage
+
+1. `yarn` - Installs the dependency modules and applies the patches from [`patches`](patches).
+2. `yarn use-snapshot` - Generates the V8 snapshot which contains the compilation and execution results of the dependency modules.
+3. `yarn start` - Starts the application at improved speed because it uses the V8 snapshot.
+4. `yarn reset-snapshot` - Stops using the V8 snapshot.
+5. `yarn start` - Starts the application but does not use the V8 snapshot.
+
 ## Explanation
 
 [`main.js`](main.js) is the code for a typical Electron application that `require()`s a bunch of JS dependencies, runs some setup code and then opens a window. Of the total 426ms startup time, the `require()`s alone take up 215ms, which is 50%! We can reduce this further by using V8 snapshot.
