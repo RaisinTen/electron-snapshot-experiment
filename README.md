@@ -227,3 +227,298 @@ Now that `require()` has been configured to load dependency modules from the V8 
 Finally, the application code is ready to use the dependency modules from the V8 snapshot!
 
 https://github.com/RaisinTen/electron-snapshot-experiment/blob/e95111b260dfbb7bd17b0ccb499478bbe8e4ef45/main.js#L24-L42
+
+### Patches
+
+All the [`patches`](patches) and [`unsnapshottable.js`](unsnapshottable.js) code belong to these categories:
+
+#### Exporting code that inherits from Node.js builtins
+
+If a constructor is exported from a module that inherits from Node.js builtins like `EventEmitter`, it would not be possible to add it to the snapshot:
+
+**`module.js`**
+```js
+const util = require('util');
+const EventEmitter = require('events');
+
+function X() {
+  // ...
+}
+
+util.inherits(X, EventEmitter);
+
+module.exports = {
+  X
+};
+```
+
+This has been handled by moving the use of the Node.js builtins from the module code into `unsnapshottable.js`:
+
+**`module.js`**
+```js
+function X() {
+  // ...
+}
+
+module.exports = {
+  X
+};
+```
+
+**`unsnapshottable.js`**
+```js
+const util = require('util');
+const EventEmitter = require('events');
+const { X } = require('module');
+
+util.inherits(X, EventEmitter);
+```
+
+Since `require()` uses a cache, modifications to the exported object are persisted across multiple `require()` calls to the same module. Hence, it is possible to make `X` inherit from `EventEmitter` dynamically at runtime when those Node.js builtins are available.
+
+For example, the inheritance logic of the `glob` module has been patched in:
+
+https://github.com/RaisinTen/electron-snapshot-experiment/blob/e95111b260dfbb7bd17b0ccb499478bbe8e4ef45/patches/glob%2B7.2.3.patch#L1-L12
+
+and moved into:
+
+https://github.com/RaisinTen/electron-snapshot-experiment/blob/e95111b260dfbb7bd17b0ccb499478bbe8e4ef45/unsnapshottable.js#L17-L23
+
+#### Exporting classes that inherit from Node.js builtins
+
+We use a similar trick for classes that inherit from Node.js builtins by using `extends` and `super` keywords:
+
+**`module.js`**
+```js
+const EventEmitter = require('events');
+
+class X extends EventEmitter {
+  constructor() {
+    super();
+    // ...
+  }
+  // ...
+}
+
+module.exports = {
+  X
+};
+```
+
+The module code can be added to the V8 snapshot with the following modifications:
+
+**`module.js`**
+```js
+const EventEmitter = require('events');
+
+class X {
+  constructor() {
+    EventEmitter.call(this);
+    // ...
+  }
+  // ...
+}
+
+module.exports = {
+  X
+};
+```
+
+**`unsnapshottable.js`**
+```js
+const EventEmitter = require('events');
+const { X } = require('module');
+
+function extendClass(target, base) {
+  Object.setPrototypeOf(target, base); // Static properties of base can now be accessed on target.
+  Object.setPrototypeOf(target.prototype, base.prototype); // Prototypal properties of base can now be accessed on target.
+}
+
+extendClass(X, EventEmitter);
+```
+
+Use of `extends` have been substituted with a dynamic class inheritance logic in `unsnapshottable.js` and use of `super` has been replaced with a call to the base class constructor which also passes the `this` object.
+
+For example, the inheritance logic of the `node_modules/ws/lib/websocket-server.js` module has been patched in:
+
+https://github.com/RaisinTen/electron-snapshot-experiment/blob/e95111b260dfbb7bd17b0ccb499478bbe8e4ef45/patches/ws%2B8.9.0.patch#L208-L229
+
+and moved into:
+
+https://github.com/RaisinTen/electron-snapshot-experiment/blob/e95111b260dfbb7bd17b0ccb499478bbe8e4ef45/unsnapshottable.js#L145-L150
+
+#### Re-exporting Node.js builtins
+
+Since Node.js builtins are not a part of the V8 snapshot, those cannot be re-exported from a module belonging to the V8 snapshot:
+
+**`module.js`**
+```js
+const fs = require('fs');
+
+exports.f = function f() { /* ... */ };
+exports.read = fs.read;
+exports.write = fs.write;
+```
+
+This can be fixed by moving the code for re-exporting the Node.js builtins into `unsnapshottable.js`:
+
+**`module.js`**
+```js
+exports.f = function f() { /* ... */ };
+```
+
+**`unsnapshottable.js`**
+```js
+const fs = require('fs');
+const module = require('module');
+
+module.read = fs.read;
+module.write = fs.write;
+```
+
+For example, the exports of the `node_modules/nedb/lib/storage.js` module has been patched in:
+
+https://github.com/RaisinTen/electron-snapshot-experiment/blob/e95111b260dfbb7bd17b0ccb499478bbe8e4ef45/patches/nedb%2B1.8.0.patch#L14-L28
+
+and moved into:
+
+https://github.com/RaisinTen/electron-snapshot-experiment/blob/e95111b260dfbb7bd17b0ccb499478bbe8e4ef45/unsnapshottable.js#L57-L68
+
+#### Exporting objects of classes that depend on Node.js builtins
+
+It is not possible to create an object of a class if the construction logic requires Node.js builtins to be present as those are not a part of the V8 snapshot:
+
+**`module.js`**
+```js
+class X {
+  constructor() {
+    this.x = process.getActiveResourcesInfo();
+  }
+};
+
+module.exports = new X();
+```
+
+This can be fixed by just exporting the class from the module and then later on in `unsnapshottable.js`, replacing the exports object with an instance of the class:
+
+**`module.js`**
+```js
+class X {
+  constructor() {
+    this.x = process.getActiveResourcesInfo();
+  }
+};
+
+module.exports = X;
+```
+
+**`unsnapshottable.js`**
+```js
+const X = require('module');
+require.cache[require.resolve('x')] = new X();
+```
+
+For example, the exports of the `node_modules/node-ipc/node-ipc.js` module has been patched in:
+
+https://github.com/RaisinTen/electron-snapshot-experiment/blob/e95111b260dfbb7bd17b0ccb499478bbe8e4ef45/patches/node-ipc%2B9.1.1.patch#L47-L59
+
+and moved into:
+
+https://github.com/RaisinTen/electron-snapshot-experiment/blob/e95111b260dfbb7bd17b0ccb499478bbe8e4ef45/unsnapshottable.js#L152-L158
+
+#### Uses of Buffer and TypedArray in the global scope
+
+Since Buffer is a Node.js builtin and TypedArrays are not supported in V8 snapshots ([since the backing store may be allocated outside of V8](https://v8.dev/blog/custom-startup-snapshots)), those cannot be used in the global scope of snapshotted modules:
+
+**`module.js`**
+```js
+const b = Buffer.from([1, 2, 3]);
+
+function f() {
+  // Do something with b.
+}
+
+function g() {
+  // Do something with b.
+}
+
+exports.f = f;
+exports.g = g;
+```
+
+This can be fixed by creating the Buffer / TypedArray instances lazily only when needed:
+
+**`module.js`**
+```js
+let b;
+function initB() {
+  if (b) return;
+  b = Buffer.from([1, 2, 3]);
+}
+
+function f() {
+  initB();
+  // Do something with b.
+}
+
+function g() {
+  initB();
+  // Do something with b.
+}
+
+exports.f = f;
+exports.g = g;
+```
+
+For example, the buffer creation in the `node_modules/ws/lib/permessage-deflate.js` module has been modified into a lazy initialization:
+
+https://github.com/RaisinTen/electron-snapshot-experiment/blob/e95111b260dfbb7bd17b0ccb499478bbe8e4ef45/patches/ws%2B8.9.0.patch#L67-L97
+
+#### Modules that uses or monkey-patches Node.js builtins during module execution
+
+Since Node.js builtins are not a part of the V8 snapshot, those cannot be monkey-patched or used during module execution if it needs to belong to the V8 snapshot:
+
+**`module.js`**
+```js
+// snapshottable code
+
+const fs = require('fs');
+fs.read = function () {
+  // ...
+};
+
+delete process.env.OLDPWD;
+
+process.on('exit', (code) => {
+  console.log('Process exit event with code: ', code);
+});
+```
+
+This can be fixed by simply moving the problematic code into `unsnapshottable.js`:
+
+**`module.js`**
+```js
+// snapshottable code
+```
+
+**`unsnapshottable.js`**
+```js
+const fs = require('fs');
+fs.read = function () {
+  // ...
+};
+
+delete process.env.OLDPWD;
+
+process.on('exit', (code) => {
+  console.log('Process exit event with code: ', code);
+});
+```
+
+For example, the code in the `agent-base` module that monkey-patched the Node.js builtins has been removed in:
+
+https://github.com/RaisinTen/electron-snapshot-experiment/blob/e95111b260dfbb7bd17b0ccb499478bbe8e4ef45/patches/agent-base%2B4.3.0.patch#L7
+
+and moved to `unsnapshottable.js` in:
+
+https://github.com/RaisinTen/electron-snapshot-experiment/blob/e95111b260dfbb7bd17b0ccb499478bbe8e4ef45/unsnapshottable.js#L90-L96
