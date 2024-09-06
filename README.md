@@ -41,9 +41,9 @@ This has successfully removed 81% of the time spent running all the `require()`s
 
 1. `yarn` - Installs the dependency modules and applies the patches from [`patches`](patches).
 2. `yarn use-snapshot` - Generates the V8 snapshot which contains the compilation and execution results of the dependency modules.
-3. `yarn start` - Starts the application at improved speed because it uses the V8 snapshot.
+3. `yarn start` - Starts the application at improved speed because it uses the V8 snapshot. Quitting the app would write the `events.json` file created by [`perftrace`](https://github.com/RaisinTen/perftrace) which can be opened up in <https://ui.perfetto.dev> to view the performance traces.
 4. `yarn reset-snapshot` - Stops using the V8 snapshot.
-5. `yarn start` - Starts the application but does not use the V8 snapshot.
+5. `yarn start` - Starts the application but does not use the V8 snapshot. Quitting the app would write the `events.json` file created by [`perftrace`](https://github.com/RaisinTen/perftrace) which can be opened up in <https://ui.perfetto.dev> to view the performance traces.
 
 ## Explanation
 
