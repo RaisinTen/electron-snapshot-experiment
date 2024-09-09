@@ -38,11 +38,10 @@ require('@sentry/node');
 require('shelljs');
 require('sudo-prompt');
 require('serialised-error');
-require('@postman/app-updater');
 require('ws');
 require('@raisinten/aes-crypto-js');
 require('node-ipc');
-require('@postman/app-logger');
+require('winston');
 require('node-forge');
 
-// TODO(RaisinTen): Can we add require('@postman/pem');?
+// TODO(RaisinTen): Can we add require('pem');?

@@ -111,22 +111,6 @@ function extendClass(target, base) {
   require('console');
 }
 
-// Move the code for making AbstractUpdater from
-// '@postman/app-updater/lib/AbstractUpdater' inherit from EventEmitter here
-// because EventEmitter is not a part of the V8 snapshot.
-{
-  const AbstractUpdater = require('@postman/app-updater/lib/AbstractUpdater');
-  extendClass(AbstractUpdater, EventEmitter);
-}
-
-// Move the code for making LinuxAutoUpdater from
-// '@postman/app-updater/lib/autoUpdater/LinuxAutoUpdater' inherit from
-// EventEmitter here because EventEmitter is not a part of the V8 snapshot.
-{
-  const LinuxAutoUpdater = require('@postman/app-updater/lib/autoUpdater/LinuxAutoUpdater');
-  extendClass(LinuxAutoUpdater, EventEmitter);
-}
-
 // Move the code for making Receiver from 'ws/lib/receiver' inherit from
 // stream.Writable here because Writable is not a part of the V8 snapshot.
 {
