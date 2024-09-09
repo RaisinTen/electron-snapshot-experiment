@@ -44,4 +44,4 @@ require('node-ipc');
 require('winston');
 require('node-forge');
 
-// TODO(RaisinTen): Can we add require('@postman/pem');?
+// TODO(RaisinTen): Can we add require('pem');?

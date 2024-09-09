@@ -38,7 +38,7 @@ const { encryptAES, decryptAES } = require('@raisinten/aes-crypto-js');
 const ipc = require('node-ipc');
 const winston = require('winston');
 const forge = require('node-forge');
-const pem = require('@postman/pem');
+const pem = require('pem');
 
 performance.measure('requires', 'requires');
 

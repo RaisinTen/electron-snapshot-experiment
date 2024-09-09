@@ -38,16 +38,6 @@
   optionalDependencies:
     global-agent "^3.0.0"
 
-"@postman/pem@1.14.6":
-  version "1.14.6"
-  resolved "https://registry.yarnpkg.com/@postman/pem/-/pem-1.14.6.tgz#3c3d62ae3b204c0b52cf2d0c9ae0f82559c95ee7"
-  integrity sha512-/lxwNFXIwaVnW9ScIgfJilfj0fs5dhoh7ZBnLpfpck/MuBDtlbjeDIyWX3BCfhA6m0alL0RWDOHS9kiwp2bEMQ==
-  dependencies:
-    es6-promisify "^7.0.0"
-    md5 "^2.3.0"
-    os-tmpdir "^1.0.2"
-    which "^2.0.2"
-
 "@raisinten/aes-crypto-js@0.0.2":
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/@raisinten/aes-crypto-js/-/aes-crypto-js-0.0.2.tgz#8761effdfc4ca2594459759deead39b40777a1b7"
@@ -1360,6 +1350,16 @@ path-parse@^1.0.7:
   version "1.0.7"
   resolved "https://registry.yarnpkg.com/path-parse/-/path-parse-1.0.7.tgz#fbc114b60ca42b30d9daf5858e4bd68bbedb6735"
   integrity sha512-LDJzPVEEEPR+y48z93A0Ed0yXb8pAByGWo/k5YYdYgpY2/2EsOsksJrq7lOHxryrVOn1ejG6oAp8ahvOIQD8sw==
+
+pem@1.14.8:
+  version "1.14.8"
+  resolved "https://registry.yarnpkg.com/pem/-/pem-1.14.8.tgz#9c414bee991b138a24617f423059e809d01aa720"
+  integrity sha512-ZpbOf4dj9/fQg5tQzTqv4jSKJQsK7tPl0pm4/pvPcZVjZcJg7TMfr3PBk6gJH97lnpJDu4e4v8UUqEz5daipCg==
+  dependencies:
+    es6-promisify "^7.0.0"
+    md5 "^2.3.0"
+    os-tmpdir "^1.0.2"
+    which "^2.0.2"
 
 pend@~1.2.0:
   version "1.2.0"
