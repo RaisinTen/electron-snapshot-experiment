@@ -36,7 +36,7 @@ const SerializedError = require('serialised-error');
 const { WebSocketServer } = require('ws');
 const { encryptAES, decryptAES } = require('@raisinten/aes-crypto-js');
 const ipc = require('node-ipc');
-const { Originator, Collectors } = require('@postman/app-logger');
+const winston = require('winston');
 const forge = require('node-forge');
 const pem = require('@postman/pem');
 

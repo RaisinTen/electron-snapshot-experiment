@@ -41,7 +41,7 @@ require('serialised-error');
 require('ws');
 require('@raisinten/aes-crypto-js');
 require('node-ipc');
-require('@postman/app-logger');
+require('winston');
 require('node-forge');
 
 // TODO(RaisinTen): Can we add require('@postman/pem');?
