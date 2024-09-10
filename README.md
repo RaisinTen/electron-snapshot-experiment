@@ -105,7 +105,15 @@ https.get = function (_url, _options, cb) {
 
 However, once our Electron app starts running, we would be able to run this code because by then, `require()` and the https module object would be available. This means that to make this script snapshottable, we would need to patch it, so that we can move the unsnapshottable code out of this script and run it during application startup after this script has been deserialized from the V8 snapshot.
 
-When `patch-package` is run, it applies the patches from [`patches`](patches) which removes the unsnapshottable code from the modules. The unsnapshottable code is then moved over to [`unsnapshottable.js`](unsnapshottable.js) which is run during application startup in [`main.js`](https://github.com/RaisinTen/electron-snapshot-experiment/blob/6f2c267c04bc97861e6df1ab409f61f3e2f80c01/main.js#L22).
+When [`patch-package`](https://github.com/ds300/patch-package) is run, it applies the patches from [`patches`](patches) which removes the unsnapshottable code from the modules. The unsnapshottable code is then moved over to [`unsnapshottable.js`](unsnapshottable.js) which is run during application startup in [`main.js`](https://github.com/RaisinTen/electron-snapshot-experiment/blob/6f2c267c04bc97861e6df1ab409f61f3e2f80c01/main.js#L22).
+
+#### Patching new dependencies
+
+When a newly added dependency needs to be patched, [follow this guide from the official documentation](https://github.com/ds300/patch-package#making-patches).
+
+#### Updating patched dependencies
+
+When a patched dependency gets updated, the code changes from the existing dependency patch file, that are still relevant, needs to be applied manually along with any additional changes and a new patch file needs to be created by [following this guide from the official documentation](https://github.com/ds300/patch-package#making-patches). Then the patch file corresponding to the previous dependency version can be deleted.
 
 ### Generating the snapshot
 
