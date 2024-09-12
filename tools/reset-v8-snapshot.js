@@ -1,8 +1,8 @@
-const { flipFuses, FuseVersion, FuseV1Options } = require('@electron/fuses')
 const path = require('path')
 const fs = require('fs')
 
-const v8ContextFileName = 'browser_v8_context_snapshot.bin'
+const v8ContextFileName = getV8ContextFileName()
+const pathToV8ContextBlobOld = path.resolve(__dirname, '..', `old-${v8ContextFileName}`)
 
 switch (process.platform) {
   case 'darwin': {
@@ -11,10 +11,10 @@ switch (process.platform) {
       '..',
       'node_modules/electron/dist/Electron.app/Contents/Frameworks/Electron Framework.framework/Versions/A/Resources'
     )
-    const pathToV8ContextFileName = path.join(pathToElectron, v8ContextFileName);
+    const pathToElectronV8ContextBlob = path.join(pathToElectron, v8ContextFileName);
 
-    console.log('Removing v8 snapshot from', pathToV8ContextFileName)
-    fs.unlinkSync(pathToV8ContextFileName)
+    console.log('Replacing V8 snapshot from', pathToElectronV8ContextBlob, 'with old V8 snapshot from', pathToV8ContextBlobOld)
+    fs.renameSync(pathToV8ContextBlobOld, pathToElectronV8ContextBlob)
     break
   }
   case 'win32':
@@ -26,20 +26,20 @@ switch (process.platform) {
       'electron',
       'dist'
     )
-    const pathToV8ContextFileName = path.join(pathToElectron, v8ContextFileName);
+    const pathToElectronV8ContextBlob = path.join(pathToElectron, v8ContextFileName);
 
-    console.log('Removing v8 snapshot from', pathToV8ContextFileName)
-    fs.unlinkSync(pathToV8ContextFileName)
+    console.log('Replacing V8 snapshot from', pathToElectronV8ContextBlob, 'with old V8 snapshot from', pathToV8ContextBlobOld)
+    fs.renameSync(pathToV8ContextBlobOld, pathToElectronV8ContextBlob)
     break
   }
 }
 
-flipFuses(
-  // Path to electron
-  require('electron'),
-  // Fuses to flip
-  {
-    version: FuseVersion.V1,
-    [FuseV1Options.LoadBrowserProcessSpecificV8Snapshot]: false
+function getV8ContextFileName() {
+  if (process.platform === 'darwin') {
+    return `v8_context_snapshot${
+      process.arch.startsWith('arm') ? '.arm64' : '.x86_64'
+    }.bin`
+  } else {
+    return `v8_context_snapshot.bin`
   }
-)
+}

@@ -8,11 +8,10 @@
   "license": "MIT",
   "scripts": {
     "start": "electron main.js",
-    "use-snapshot": "rm -rf cache *.bin && yarn create-snapshot && yarn copy-snapshot && yarn read-fuses",
+    "use-snapshot": "rm -rf cache *.bin && yarn create-snapshot && yarn copy-snapshot",
     "create-snapshot": "node tools/create-v8-snapshot.js",
     "copy-snapshot": "node tools/copy-v8-snapshot.js",
-    "reset-snapshot": "node tools/reset-v8-snapshot.js && yarn read-fuses",
-    "read-fuses": "electron-fuses read --app node_modules/electron/dist/Electron.app",
+    "reset-snapshot": "node tools/reset-v8-snapshot.js",
     "postinstall": "patch-package"
   },
   "dependencies": {
@@ -38,7 +37,6 @@
     "ws": "8.9.0"
   },
   "devDependencies": {
-    "@electron/fuses": "^1.8.0",
     "electron-link": "^0.6.0",
     "electron-mksnapshot": "28.3.1",
     "patch-package": "^8.0.0"
