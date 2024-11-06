@@ -1357,10 +1357,10 @@ pend@~1.2.0:
   resolved "https://registry.yarnpkg.com/pend/-/pend-1.2.0.tgz#7a57eb550a6783f9115331fcf4663d5c8e007a50"
   integrity sha512-F3asv42UuXchdzt+xXqfW1OGlVBe+mxa2mqI0pg5yAHZPvFmY3Y6drSf/GQ1A86WgWEN9Kzh/WrgKa6iGcHXLg==
 
-perftrace@^1.2.1:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/perftrace/-/perftrace-1.2.1.tgz#26536d86b8cf54e981130b155e3bce402b3ed5f6"
-  integrity sha512-eA2cgq8Zeykj2eTCJKlYnyde24lKxD2RE2KMXXpbd8Nkud2ZfUiPbqh/b34nhQUcNmq38liAxi2eoyfcTD9Cdw==
+perftrace@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/perftrace/-/perftrace-1.3.0.tgz#1341dcf239a7f4fcc50af95fe731ce5630a21c05"
+  integrity sha512-35JILHeikwrFYl98KK1C7GRNXt4GDSaV6PLEmTKsX2WaRtAnC1hD7HNt91I8WFh6nv9lkFB1sMlRT9ywH9u5kA==
 
 picomatch@^2.3.1:
   version "2.3.1"

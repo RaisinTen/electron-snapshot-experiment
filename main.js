@@ -5,7 +5,7 @@ const { performance } = require('node:perf_hooks');
 
 const traceEvents = new TraceEvents();
 
-trackRequires(true);
+trackRequires(true, { trackSource: true });
 
 // Modules to control application life and create native browser window
 const { app, BrowserWindow } = require('electron')

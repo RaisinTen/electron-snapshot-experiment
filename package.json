@@ -27,7 +27,7 @@
     "node-forge": "0.10.0",
     "node-ipc": "9.1.1",
     "pem": "1.14.8",
-    "perftrace": "^1.2.1",
+    "perftrace": "^1.3.0",
     "semver": "5.5.1",
     "serialised-error": "1.1.3",
     "shelljs": "0.8.4",
